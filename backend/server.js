@@ -9,9 +9,11 @@ dotenv.config();
 // Custom imports
 import connectDb from './config/db.js';
 import productRoutes from './routes/product-routes.js';
+import userRoutes from './routes/user-routes.js';
 import {notFound, errorhandler} from "./middleware/errors.js";
 
 const app = express();
+app.use(express.json());
 const env = app.get('env');
 const PORT = process.env.PORT || 5000;
 
@@ -20,6 +22,7 @@ connectDb(env);
 app.use(morgan('dev'));
 
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(notFound)
 
