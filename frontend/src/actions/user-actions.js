@@ -11,8 +11,7 @@ import {
     USER_REGISTER_SUCCESS,
     USER_UPDATE_INFO_FAIL,
     USER_UPDATE_INFO_REQUEST,
-    USER_UPDATE_INFO_SUCCESS,
-    USER_UPDATE_INFO_RESET
+    USER_UPDATE_INFO_SUCCESS
 } from "../constants/user-constants";
 import axios from 'axios'
 
@@ -133,7 +132,7 @@ export const updateUserDetails = (user) =>  async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`
             },
         }
-        const {data} = await axios.put(`/api/users//profile`, user, config)
+        const {data} = await axios.put(`/api/users/profile`, user, config)
 
         dispatch({
             type: USER_UPDATE_INFO_SUCCESS,
