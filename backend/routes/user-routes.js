@@ -1,5 +1,5 @@
 import express from 'express';
-import {loginUser, registerUser, getProfile} from "../controllers/user-controllers.js";
+import {loginUser, registerUser, getProfile, updateUser} from "../controllers/user-controllers.js";
 import {auth} from '../middleware/auth.js'
 
 const router = express.Router();
@@ -27,6 +27,11 @@ router.use(auth)
 *  @route:  GET /api/users/profile
 *  @access: Private
 */
-router.route('/profile').get(getProfile)
+/*
+*  @desc:   Update user profile
+*  @route:  PUT /api/users/profile
+*  @access: Private
+*/
+router.route('/profile').get(getProfile).put(updateUser)
 
 export default router;
