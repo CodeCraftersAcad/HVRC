@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Form, Button, Row, Col} from "react-bootstrap";
+import {Form, Button, Row, Col, Table} from "react-bootstrap";
+import {LinkContainer} from 'react-router-bootstrap'
 import {useDispatch, useSelector} from "react-redux";
 import Message from "../components/message";
 import Loader from "../components/loader";
 import {getUserDetails, updateUserDetails} from "../actions/user-actions";
-
+import {listUsersOrders} from "../actions/order-actions";
 
 
 const ProfileScreen = ({location, history}) => {
@@ -22,22 +23,27 @@ const ProfileScreen = ({location, history}) => {
     const userLogin = useSelector(state => state.userLogin);
     const {userInfo} = userLogin;
 
-    const userUpdates = useSelector(state => state.userUpdateProfile);
-    const {success} = userUpdates;
+    const userUpdateProfile = useSelector(state => state.userUpdateProfile);
+    const {success} = userUpdateProfile;
+
+    const userOrders = useSelector(state => state.userOrders);
+    const {orders, error: errorOrders, loading: userOrdersLoading} = userOrders;
 
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
         } else {
-            if (!user.name) dispatch(getUserDetails('profile'))
-            else {
+            if (!user.name) {
+                dispatch(getUserDetails('profile'))
+                dispatch(listUsersOrders())
+            } else {
                 setName(user.name)
                 setEmail(user.email)
             }
         }
     }, [dispatch, history, userInfo, user])
 
-    const submitRegister = e => {
+    const submitUserUpdate = e => {
         e.preventDefault()
 
         if (password !== confirmedPassword) {
@@ -53,9 +59,9 @@ const ProfileScreen = ({location, history}) => {
             <h2>Profile</h2>
             {message && <Message variant='info'>{message}</Message>}
             {error && <Message variant='danger'>{error}</Message>}
-            {success && <Message variant='success'>User information updated</Message>}
+            {/*{success && <Message variant='success'>User information updated</Message>}*/}
             {loading && <Loader/>}
-            <Form onSubmit={submitRegister}>
+            <Form onSubmit={submitUserUpdate}>
                 <Form.Group controlId='name'>
                     <Form.Label>Name</Form.Label>
                     <Form.Control type='text'
@@ -89,12 +95,46 @@ const ProfileScreen = ({location, history}) => {
                                   onChange={e => setConfirmedPassword(e.target.value)}>
                     </Form.Control>
                 </Form.Group>
-                <Button type='submit' variant='outline-primary'>Save</Button>
+                <Button type='submit' variant='outline-primary'>Update</Button>
             </Form>
         </Col>
 
         <Col md={9}>
             <h3>My orders</h3>
+            {userOrdersLoading ? <Loader/> : error ? <Message variant='danger'>{errorOrders}</Message> : (
+                <Table striped bordered hover responsive className='table-sm'>
+                    <thead>
+                    <tr>
+                   <th>ID</th>
+                   <th>DATE</th>
+                   <th>TOTAL</th>
+                   <th>PAID</th>
+                   <th>DELIVERED</th>
+                   <th>DETAILS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {orders.map(order => (
+                        <tr key={order._id}>
+                            <td>{order._id}</td>
+                            <td>{order.createdAt.substring(0, 10)}</td>
+                            <td>{order.totalPrice}</td>
+                            <td>{order.isPaid ? order.paidAt.substring(0, 10) : (
+                                <i className='fas fa-times' style={{color: 'red'}}></i>
+                            )}</td>
+                            <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : (
+                                <i className='fas fa-times' style={{color: 'red'}}></i>
+                            )}</td>
+                            <td>
+                                <LinkContainer to={`/order/${order._id}`}>
+                                    <Button className='btn' variant='outline-dark'>Details</Button>
+                                </LinkContainer>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
+            )}
         </Col>
     </Row>
 };
