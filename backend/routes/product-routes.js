@@ -1,5 +1,13 @@
 import express from 'express';
-import {getAllProducts, getSingleProduct} from "../controllers/product-controllers.js";
+import {
+    getAllProducts,
+    getSingleProduct,
+    deleteSingleProduct,
+    createMewProduct,
+    updateProduct,
+    createNewReview
+} from "../controllers/product-controllers.js";
+import {isAdminCheck, auth} from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -8,13 +16,28 @@ const router = express.Router();
 *  @route:  GET /api/products/
 *  @access: Public
 */
-router.route('/').get(getAllProducts)
+router.route('/').get(getAllProducts).post(auth, isAdminCheck, createMewProduct)
 
 /*
 *  @desc:   Fetch single product
 *  @route:  GET /api/products/:id
 *  @access: Public
 */
+
+/*
+*  @desc:   Create new review
+*  @route:  POST /api/products/:id/reviews
+*  @access: Private
+*/
+router.route('/:id/reviews').post(auth, createNewReview)
+/*
+*  @desc:   Delete single product
+*  @route:  DELETE /api/products/:id
+*  @access: Private / Admin
+*/
 router.route('/:id').get(getSingleProduct)
+    .delete(auth, isAdminCheck, deleteSingleProduct)
+    .put(auth, isAdminCheck, updateProduct)
+
 
 export default router

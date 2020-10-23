@@ -3,7 +3,7 @@ import {Form, Button, Row, Col, Table} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {useDispatch, useSelector} from "react-redux";
 import Message from "../components/message";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 import {getUserDetails, updateUserDetails} from "../actions/user-actions";
 import {listUsersOrders} from "../actions/order-actions";
 
@@ -59,7 +59,7 @@ const ProfileScreen = ({location, history}) => {
             <h2>Profile</h2>
             {message && <Message variant='info'>{message}</Message>}
             {error && <Message variant='danger'>{error}</Message>}
-            {/*{success && <Message variant='success'>User information updated</Message>}*/}
+            {success && <Message variant='success'>User information updated</Message>}
             {loading && <Loader/>}
             <Form onSubmit={submitUserUpdate}>
                 <Form.Group controlId='name'>

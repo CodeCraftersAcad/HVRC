@@ -4,9 +4,11 @@ import {Row, Col} from "react-bootstrap";
 import Product from "../components/Product";
 import {listProducts} from "../actions/product-actions";
 import Message from "../components/message";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 
-const HomeScreen = () => {
+const HomeScreen = ({match}) => {
+
+    const keyword = match.params.keyword
     const dispatch = useDispatch();
     // productList is coming from the store
     const productList = useSelector(state => state.productList);
@@ -15,8 +17,8 @@ const HomeScreen = () => {
     const {loading, error, products} = productList
 
     useEffect(() => {
-        dispatch(listProducts())
-    }, [dispatch])
+        dispatch(listProducts(keyword))
+    }, [dispatch, keyword])
 
     return (
         <>
