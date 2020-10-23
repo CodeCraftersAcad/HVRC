@@ -5,7 +5,8 @@ import {
     deleteSingleProduct,
     createMewProduct,
     updateProduct,
-    createNewReview
+    createNewReview,
+    getBestReviewedProducts
 } from "../controllers/product-controllers.js";
 import {isAdminCheck, auth} from "../middleware/auth.js";
 
@@ -30,6 +31,13 @@ router.route('/').get(getAllProducts).post(auth, isAdminCheck, createMewProduct)
 *  @access: Private
 */
 router.route('/:id/reviews').post(auth, createNewReview)
+
+/*
+*  @desc:   Get top rated products
+*  @route:  GET /api/products/top
+*  @access: Public
+*/
+router.route('/top').get(getBestReviewedProducts)
 /*
 *  @desc:   Delete single product
 *  @route:  DELETE /api/products/:id

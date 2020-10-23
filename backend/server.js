@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import path from 'path'
 import colors from 'colors'
 import cloudinary from 'cloudinary'
+
 const cloud = cloudinary
 
 
@@ -37,12 +38,19 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 
-app.get('/api/config/paypal' , (req, res) => {
+app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID)
 })
 
+// Resolve __dirname since using es6 modules
 const __dirname = path.resolve()
+
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+if (env === 'production') {
+    app.use(express.static(path.join(__dirname, '/frontend/build')))
+    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')))
+}
+
 
 app.use(notFound)
 app.use(errorhandler)

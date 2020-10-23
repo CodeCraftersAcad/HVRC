@@ -16,15 +16,18 @@ import {
     PRODUCT_UPDATE_FAIL,
     PRODUCT_REVIEW_REQUEST,
     PRODUCT_REVIEW_SUCCESS,
-    PRODUCT_REVIEW_FAIL
+    PRODUCT_REVIEW_FAIL,
+    PRODUCT_GET_BEST_PRODUCTS_REQUEST,
+    PRODUCT_GET_BEST_PRODUCTS_SUCCESS,
+    PRODUCT_GET_BEST_PRODUCTS_FAIL
 } from "../constants/product-contstants";
 import axios from 'axios';
 
-export const listProducts = (keyword = '') => async (dispatch) => {
+export const listProducts = (keyword = '', pageNumber = '') => async (dispatch) => {
     try {
         dispatch({type: PRODUCT_LIST_REQUEST})
 
-        const {data} = await axios.get(`/api/products/?keyword=${keyword}`)
+        const {data} = await axios.get(`/api/products/?keyword=${keyword}&pageNumber=${pageNumber}`)
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
@@ -173,6 +176,26 @@ export const createNewProductReview = (productId, review) => async (dispatch, ge
     } catch (error) {
         dispatch({
             type: PRODUCT_REVIEW_FAIL,
+            // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
+            // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const listTopRatedProducts = () => async (dispatch) => {
+    try {
+        dispatch({type: PRODUCT_GET_BEST_PRODUCTS_REQUEST})
+
+        const {data} = await axios.get(`/api/products//top`)
+
+        dispatch({
+            type: PRODUCT_GET_BEST_PRODUCTS_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_GET_BEST_PRODUCTS_FAIL,
             // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
             // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
             payload: error.response && error.response.data.message ? error.response.data.message : error.message

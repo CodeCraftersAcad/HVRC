@@ -8,6 +8,10 @@ import Product from '../models/Product.js'
 *  @access: Public
 */
 const getAllProducts = asyncHandler(async (req, res) => {
+    // Pagination set number for pagination
+    const pageSize = 10
+    const page = Number(req.query.pageNumber) || 1
+
     // Query for keyword in the url or set it to empty object
     const keyword = req.query.keyword ? {
         name: {
@@ -16,10 +20,13 @@ const getAllProducts = asyncHandler(async (req, res) => {
         }
     } : {}
 
+    // Get total count of products
+    const count = await Product.countDocuments({...keyword})
+
     // When looking for keyword value use the spread in the find so that it wil either match the value or pass an
     // empty object and retrieve all products
-    const products = await Product.find({...keyword})
-    res.json(products)
+    const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page - 1))
+    res.json({products, page, pages: Math.ceil(count / pageSize)})
 })
 
 /*
@@ -130,12 +137,20 @@ const createNewReview = asyncHandler(async (req, res) => {
         await product.save()
         res.status(201).json({message: 'Thank you for your review'})
 
-            } else {
+    } else {
         res.status(404)
         throw new Error('Product Not Found')
     }
+})
 
-
+/*
+*  @desc:   Get top rated products
+*  @route:  GET /api/products/top
+*  @access: Public
+*/
+const getBestReviewedProducts = asyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({rating: -1}).limit(3)
+    res.json(products)
 })
 
 export {
@@ -144,5 +159,6 @@ export {
     deleteSingleProduct,
     createMewProduct,
     updateProduct,
-    createNewReview
+    createNewReview,
+    getBestReviewedProducts
 }
