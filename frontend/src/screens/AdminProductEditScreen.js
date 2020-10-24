@@ -76,11 +76,11 @@ const AdminProductEditScreen = ({match, history}) => {
             _id: productId,
             name,
             price,
+            image,
             brand,
+            countInStock,
             category,
             description,
-            countInStock,
-            image
         }))
     }
     return (

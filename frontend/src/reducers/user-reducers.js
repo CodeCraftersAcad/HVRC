@@ -2,6 +2,7 @@ import {
     USER_UPDATE_INFO_REQUEST,
     USER_UPDATE_INFO_SUCCESS,
     USER_UPDATE_INFO_FAIL,
+    USER_UPDATE_INFO_RESET,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAIL,
@@ -72,11 +73,13 @@ export const userDetailsReducer = (state = {user: {}}, action) => {
 export const userUpdateInfoReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_UPDATE_INFO_REQUEST:
-            return {...state, loading: true}
+            return {loading: true}
         case USER_UPDATE_INFO_SUCCESS:
-            return {loading: false, success: true, userInfo: action.payload}
+            return {loading: false, success: true, user: action.payload}
         case USER_UPDATE_INFO_FAIL:
             return {loading: false, error: action.payload}
+        case USER_UPDATE_INFO_RESET:
+            return {}
         default:
             return state
     }
