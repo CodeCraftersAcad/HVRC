@@ -34,10 +34,11 @@ const ProfileScreen = ({location, history}) => {
         if (!userInfo) {
             history.push('/login')
         } else {
-            if (!user || !user.name || success) {
-                dispatch({type: USER_UPDATE_INFO_RESET})
+            if (!user || !user.name) {
                 dispatch(getUserDetails('profile'))
                 dispatch(listUsersOrders())
+            } else if (success) {
+                setTimeout(() => dispatch({type: USER_UPDATE_INFO_RESET}), 3000)
             } else {
                 setName(user.name)
                 setEmail(user.email)
@@ -55,6 +56,9 @@ const ProfileScreen = ({location, history}) => {
             dispatch(updateUserDetails({id: user._id, name, email, password}))
         }
     }
+
+
+
 
     return <Row>
         <Col md={3}>

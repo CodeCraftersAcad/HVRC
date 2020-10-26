@@ -41,6 +41,7 @@ const upload = multer({
 
 router.post('/', upload.single('image'), asyncHandler (async (req, res) => {
     const uploadPhoto = await cloud.uploader.upload(`${req.file.path}`)
+    console.log(req.file.path)
     res.send(uploadPhoto.url)
 }))
 

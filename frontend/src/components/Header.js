@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route} from 'react-router-dom'
 import {Navbar, Nav, Container, NavDropdown} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap';
@@ -46,6 +46,9 @@ const Header = () => {
                                 <NavDropdown id='adminMenu' title='Admin'>
                                     <LinkContainer to='/admin/userlist'>
                                         <NavDropdown.Item>Users</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer to='/admin/categorylist'>
+                                        <NavDropdown.Item>Categories</NavDropdown.Item>
                                     </LinkContainer>
                                     <LinkContainer to='/admin/productlist'>
                                         <NavDropdown.Item>Products</NavDropdown.Item>

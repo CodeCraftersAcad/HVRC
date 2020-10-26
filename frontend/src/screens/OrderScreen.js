@@ -3,7 +3,6 @@ import {Row, Col, ListGroup, Image, Card, Button} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import Message from "../components/message";
 import {getOrderDetails, payOrder, deliverOrder} from "../actions/order-actions";
-import {clearCartFromLocalStorage} from "../actions/cart-actions";
 import Loader from "../components/Loader";
 import {Link} from "react-router-dom";
 import axios from 'axios'
@@ -70,7 +69,6 @@ const OrderDetailsScreen = ({match, history}) => {
 
     const successfulPayment = (paymentResult) => {
         dispatch(payOrder(orderId, paymentResult))
-        dispatch(clearCartFromLocalStorage)
     }
 
     const setShipped = () => {
