@@ -13,6 +13,10 @@ h3 {
     padding: 1rem 0;
 }
 
+.jumbotron {
+    padding: 1em;
+}
+
 .rating span {
     margin: .1rem;
 }

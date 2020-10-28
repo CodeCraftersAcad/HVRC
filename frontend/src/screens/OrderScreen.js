@@ -93,8 +93,8 @@ const OrderDetailsScreen = ({match, history}) => {
                                 {' '} {order.shippingAddress.city} {order.shippingAddress.zipcode}, {' '}
                                 {order.shippingAddress.country}
                                 {order.isDelivered ?
-                                    <Message variant='success'>Delivered on {order.deliveredAt}</Message> :
-                                    <Message variant='warning'>Not Delivered</Message>}
+                                    <Message variant='success'>Shipped on {order.deliveredAt}</Message> :
+                                    <Message variant='warning'>Not Shipped</Message>}
                             </ListGroup.Item>
 
                             <ListGroup.Item>

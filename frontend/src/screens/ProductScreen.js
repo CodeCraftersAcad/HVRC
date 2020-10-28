@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {Row, Col, Image, ListGroup, Card, Button, Form} from "react-bootstrap";
+import {Row, Col, Image, ListGroup, Card, Button, Form, Table} from "react-bootstrap";
 import Rating from "../components/Rating";
 import {listProductDetails, createNewProductReview} from "../actions/product-actions";
 import Loader from "../components/Loader";
@@ -52,13 +52,14 @@ const ProductScreen = ({history, match}) => {
             {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (
                 <>
                     <Row>
-                        <Col md={5}>
+                        <Col md={4}>
                             <Image src={product.image} alt={product.name} fluid/>
                         </Col>
                         <Col md={4}>
                             <ListGroup variant='flush'>
                                 <ListGroup.Item>
-                                    <h2>{product.name}</h2>
+                                    <h2>{product.name}, {product.additionalName}</h2>
+                                    <h4>SKU: {product.sku}</h4>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Rating text={`${product.numReviews}`} reviews value={product.rating}/>
@@ -66,9 +67,12 @@ const ProductScreen = ({history, match}) => {
                                 <ListGroup.Item>
                                     Price: ${product.price}
                                 </ListGroup.Item>
+                                <ListGroup.Item>
+                                    Sub-Category: {product.subCategory}
+                                </ListGroup.Item>
                             </ListGroup>
                         </Col>
-                        <Col md={3}>
+                        <Col md={4}>
                             <Card>
                                 <ListGroup variant='flush'>
                                     <ListGroup.Item>
@@ -78,6 +82,48 @@ const ProductScreen = ({history, match}) => {
                                             </Col>
                                             <Col>
                                                 <strong>{product.price}</strong>
+                                            </Col>
+                                        </Row>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item>
+                                        <Row>
+                                            <Col>
+                                                Category:
+                                            </Col>
+                                            <Col>
+                                                {product.category}
+                                            </Col>
+                                        </Row>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item>
+                                        <Row>
+                                            <Col>
+                                                Shipping Cost:
+                                            </Col>
+                                            <Col>
+                                                {product.shippingCost}
+                                            </Col>
+                                        </Row>
+                                    </ListGroup.Item>
+                                        <ListGroup.Item>
+                                            <Row>
+                                                <Col>
+                                                    Shipping Time:
+                                                </Col>
+                                                <Col>
+                                                    {product.shippingTime}
+                                                </Col>
+                                            </Row>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item>
+                                        <Row>
+                                            <Col>
+                                                Discountable:
+                                            </Col>
+                                            <Col>
+                                                {product.discountable ?
+                                                    <i className='fa fa-check' style={{color: 'green'}}></i> :
+                                                    <i className='fas fa-times' style={{color: 'red'}}></i>}
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
@@ -118,10 +164,42 @@ const ProductScreen = ({history, match}) => {
                         </Col>
                     </Row>
                     <Row className='pt-2 pb-4'>
-                        <Col>
+                        <Col md={6} sm={12}>
                             <ListGroup.Item>
                                 <small><strong>Description:</strong></small> {product.description}
                             </ListGroup.Item>
+                        </Col>
+                        <Col md={6} sm={12}>
+                            <Table striped bordered hover responsive className='table-sm'>
+                                <thead>
+                                <tr>
+                                    <th>Scale</th>
+                                    <th>Dimension</th>
+                                    <th>Weight</th>
+                                    <th>Package Includes</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <td>{product.scale}</td>
+                                <td>{product.dimensions}</td>
+                                <td>{product.weight} (lbs)</td>
+                                <td>{product.includesAdditional}</td>
+                                </tbody>
+                            </Table>
+                            <Table striped bordered hover responsive className='table-sm'>
+                                <thead>
+                                <tr>
+                                    <th>Power Type</th>
+                                    <th>Motor</th>
+                                    <th>Battery</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <td>{product.powerType}</td>
+                                <td>{product.motor}</td>
+                                <td>{product.battery}</td>
+                                </tbody>
+                            </Table>
                         </Col>
                     </Row>
 

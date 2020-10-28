@@ -69,13 +69,34 @@ const createMewProduct = asyncHandler(async (req, res) => {
     const product = new Product({
         name: 'Sample Name',
         price: 0,
+        productIdNumber: '',
+        weight: '',
+        subCategory: 'Rc',
         user: req.user._id,
         image: '/images/sample.jpg',
+        // image2: '',
+        // image3: '',
+        // image4: '',
+        // image5: '',
         brand: 'Sample Brand',
         category: 'Sample Category',
+        scale: '',
         countInStock: 0,
         numReviews: 0,
-        description: 'Sample something nice'
+        description: 'Sample something nice',
+        additionalName: 'Products name additional details',
+        powerType: '',
+        motor: '',
+        transmitter: '',
+        other: '',
+        dimensions: '',
+        battery: '',
+        includesAdditional: '',
+        sku: '',
+        discountable: false,
+        colors: '',
+        shippingCost: 0,
+        shippingTime: ''
     })
 
     const createdProduct = await product.save()
@@ -89,18 +110,44 @@ const createMewProduct = asyncHandler(async (req, res) => {
 *  @access: Private / Admin
 */
 const updateProduct = asyncHandler(async (req, res) => {
-    const {name, price, description, image, brand, category, countInStock} = req.body
+    const {
+        name, additionalName, price, description, image, image2, image3, image4, image5, brand, category,
+        countInStock, powerType, motor, transmitter, other, dimensions, battery, includesAdditional, sku,
+        discountable, productIdNumber, weight, subCategory, scale, colors, shippingCost, shippingTime
+    } = req.body
     const product = await Product.findById(req.params.id)
     if (product) {
         product.name = name
+        product.additionalName = additionalName
         product.price = price
         product.description = description
         product.image = image
+        product.shippingCost = shippingCost
+        product.shippingTime = shippingTime
+        // product.image2 = image2
+        // product.image3 = image3
+        // product.image4 = image4
+        // product.image5 = image5
         product.brand = brand
         product.category = category
         product.countInStock = countInStock
+        product.powerType = powerType
+        product.motor = motor
+        product.transmitter = transmitter
+        product.other = other
+        product.dimensions = dimensions
+        product.battery = battery
+        product.includesAdditional = includesAdditional
+        product.sku = sku
+        product.discountable = discountable
+        product.productIdNumber = productIdNumber
+        product.weight = weight
+        product.subCategory = subCategory
+        product.scale = scale
+        product.colors = colors
 
         const updatedProduct = await product.save()
+        console.log(updatedProduct)
         res.status(201).json(updatedProduct)
     } else {
         res.status(404)

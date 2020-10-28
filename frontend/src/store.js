@@ -1,7 +1,10 @@
 import {createStore, combineReducers, applyMiddleware} from "redux";
 import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
-import {categoryListReducer, categoryDeleteReducer, categoryCreateReducer} from "./reducers/category-reducers";
+import {
+    categoryListReducer, categoryDeleteReducer, categoryCreateReducer, categoryUpdateReducer,
+    scaleCreateReducer, scaleListReducer, scaleUpdateReducer, scaleDeleteReducer, scaleDetailsReducer
+} from "./reducers/category-reducers";
 import {
     productListReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer,
     productReviewReducer, productBestRatedReducer
@@ -18,9 +21,15 @@ import {
 
 
 const reducer = combineReducers({
+    updateCategory: categoryUpdateReducer,
     getCategories: categoryListReducer,
     createCategory: categoryCreateReducer,
     deleteCategory: categoryDeleteReducer,
+    updateScale: scaleUpdateReducer,
+    getScales: scaleListReducer,
+    scaleDetails: scaleDetailsReducer,
+    createScale: scaleCreateReducer,
+    deleteScale: scaleDeleteReducer,
     adminGetAllOrders: adminGetAllOrdersReducer,
     adminCreateProduct: productCreateReducer,
     adminProductUpdate: productUpdateReducer,

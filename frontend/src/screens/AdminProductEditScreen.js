@@ -8,17 +8,35 @@ import {listProductDetails, adminUpdateSingleProduct} from "../actions/product-a
 import FormContainer from "../components/form-container";
 import {PRODUCT_UPDATE_RESET} from "../constants/product-contstants";
 import axios from 'axios'
+import {listCategories} from "../actions/category-actions";
 
 const AdminProductEditScreen = ({match, history}) => {
     const productId = match.params.id
     const [name, setName] = useState('');
+    const [additionalName, setAdditionalName] = useState('');
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState('')
     const [brand, setBrand] = useState('')
     const [category, setCategory] = useState('')
     const [countInStock, setCountInStock] = useState(0)
     const [description, setDescription] = useState('')
+    const [powerType, setPowerType] = useState('')
+    const [motor, setMotor] = useState('')
+    const [transmitter, setTransmitter] = useState('')
+    const [other, setOther] = useState('')
+    const [dimensions, setDimensions] = useState('')
+    const [battery, setBattery] = useState('')
+    const [includesAdditional, setIncludesAdditions] = useState('')
+    const [sku, setSku] = useState('')
+    const [discountable, setDiscountable] = useState(false)
     const [uploading, setUploading] = useState(false)
+    const [scale, setScale] = useState('')
+    const [productIdNumber, setProductIdNumber] = useState('')
+    const [weight, setWeight] = useState('')
+    const [subCategory, setSubCategory] = useState('')
+    const [colors, setColors] = useState('')
+    const [shippingCost, setShippingCost] = useState(0)
+    const [shippingTime, setShippingTime] = useState('')
 
     const dispatch = useDispatch();
 
@@ -37,15 +55,34 @@ const AdminProductEditScreen = ({match, history}) => {
             dispatch({type: PRODUCT_UPDATE_RESET})
             history.push('/admin/productlist')
         } else {
-            if (!product.name || product._id !== productId) dispatch(listProductDetails(productId))
-            else {
+            if (!product.name || product._id !== productId) {
+                dispatch(listProductDetails(productId))
+                dispatch(listCategories())
+            } else {
                 setName(product.name)
+                setAdditionalName(product.additionalName)
                 setPrice(product.price)
                 setImage(product.image)
                 setBrand(product.brand)
                 setCategory(product.category)
                 setCountInStock(product.countInStock)
                 setDescription(product.description)
+                setPowerType(product.powerType)
+                setMotor(product.motor)
+                setTransmitter(product.transmitter)
+                setOther(product.other)
+                setDimensions(product.dimensions)
+                setBattery(product.battery)
+                setIncludesAdditions(product.includesAdditional)
+                setSku(product.sku)
+                setScale(product.scale)
+                setDiscountable(product.discountable)
+                setProductIdNumber(product.productIdNumber)
+                setWeight(product.weight)
+                setSubCategory(product.subCategory)
+                setColors(product.colors)
+                setShippingCost(product.shippingCost)
+                setShippingTime(product.shippingTime)
             }
         }
     }, [dispatch, productId, product, history, successAdminProductUpdate])
@@ -78,12 +115,29 @@ const AdminProductEditScreen = ({match, history}) => {
         dispatch(adminUpdateSingleProduct({
             _id: productId,
             name,
+            additionalName,
             price,
             image,
             brand,
             countInStock,
             category,
             description,
+            powerType,
+            motor,
+            transmitter,
+            other,
+            dimensions,
+            battery,
+            includesAdditional,
+            sku,
+            discountable,
+            productIdNumber,
+            weight,
+            scale,
+            subCategory,
+            colors,
+            shippingCost,
+            shippingTime
         }))
     }
     return (
@@ -94,6 +148,8 @@ const AdminProductEditScreen = ({match, history}) => {
             <FormContainer>
                 <h1>Edit Product</h1>
                 {adminLoadingProductUpdate && <Loader/>}
+                {loadingCategories && <Loader/>}
+                {errorCategories && <Message variant='danger'>{errorCategories}</Message>}
                 {adminProductUpdateError && <Message variant='danger'>{adminProductUpdateError}</Message>}
                 {loading
                     ? <Loader/>
@@ -110,6 +166,50 @@ const AdminProductEditScreen = ({match, history}) => {
                                                   onChange={e => setName(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
+                                <Form.Group controlId='additionalName'>
+                                    <Form.Label>Addition Name</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Name Details'
+                                                  value={additionalName}
+                                                  onChange={e => setAdditionalName(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='weight'>
+                                    <Form.Label>Weight</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter product weight'
+                                                  value={weight}
+                                                  onChange={e => setWeight(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='scale'>
+                                    <Form.Label>Scale</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter scale'
+                                                  value={scale}
+                                                  onChange={e => setScale(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='subCategory'>
+                                    <Form.Label>Sub-Category</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter sub category'
+                                                  value={subCategory}
+                                                  onChange={e => setSubCategory(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='productIdNumber'>
+                                    <Form.Label>Product ID Number</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter product id number'
+                                                  value={productIdNumber}
+                                                  onChange={e => setProductIdNumber(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
 
                                 <Form.Group controlId='price'>
                                     <Form.Label>Price</Form.Label>
@@ -117,6 +217,15 @@ const AdminProductEditScreen = ({match, history}) => {
                                                   placeholder='Enter product price'
                                                   value={price}
                                                   onChange={e => setPrice(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='shippingTime'>
+                                    <Form.Label>Shipping Time</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter shipping Time'
+                                                  value={shippingTime}
+                                                  onChange={e => setShippingTime(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
 
@@ -144,6 +253,24 @@ const AdminProductEditScreen = ({match, history}) => {
                                     </Form.Control>
                                 </Form.Group>
 
+                                <Form.Group controlId='shippingCost'>
+                                    <Form.Label>Shipping Cost</Form.Label>
+                                    <Form.Control type='number'
+                                                  placeholder='Enter shipping cost'
+                                                  value={shippingCost}
+                                                  onChange={e => setShippingCost(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='colors'>
+                                    <Form.Label>Colors</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter product colors'
+                                                  value={colors}
+                                                  onChange={e => setColors(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
                                 <Form.Group controlId='count'>
                                     <Form.Label>Count In Stock</Form.Label>
                                     <Form.Control type='number'
@@ -153,7 +280,7 @@ const AdminProductEditScreen = ({match, history}) => {
                                     </Form.Control>
                                 </Form.Group>
 
-                                <Form.Group>
+                                <Form.Group controlId='category'>
                                     <Form.Label>Category</Form.Label>
                                     <Form.Control as='select' value={category}
                                                   onChange={(e) => setCategory(e.target.value)}>
@@ -163,6 +290,16 @@ const AdminProductEditScreen = ({match, history}) => {
                                     </Form.Control>
                                 </Form.Group>
 
+                                {/*<Form.Group controlId='scale'>*/}
+                                {/*    <Form.Label>Category</Form.Label>*/}
+                                {/*    <Form.Control as='select' value={scale}*/}
+                                {/*                  onChange={(e) => setScale(e.target.value)}>*/}
+                                {/*        /!*{scales && scales.map(scale => (*!/*/}
+                                {/*        /!*    <option key={scale._id} value={scale.name}>{scale.name}</option>))}*!/*/}
+
+                                {/*    </Form.Control>*/}
+                                {/*</Form.Group>*/}
+
                                 <Form.Group controlId='description'>
                                     <Form.Label>Description</Form.Label>
                                     <Form.Control type='text'
@@ -170,6 +307,84 @@ const AdminProductEditScreen = ({match, history}) => {
                                                   value={description}
                                                   onChange={e => setDescription(e.target.value)}>
                                     </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='powerType'>
+                                    <Form.Label>Power Type</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter powerType'
+                                                  value={powerType}
+                                                  onChange={e => setPowerType(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='motor'>
+                                    <Form.Label>Motor</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Motor specs'
+                                                  value={motor}
+                                                  onChange={e => setMotor(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='transmitter'>
+                                    <Form.Label>Transmitter</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Transmitter type'
+                                                  value={transmitter}
+                                                  onChange={e => setTransmitter(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='other'>
+                                    <Form.Label>Other Information</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter addtional information'
+                                                  value={other}
+                                                  onChange={e => setOther(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='description'>
+                                    <Form.Label>Dimensions</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter product dimensions'
+                                                  value={dimensions}
+                                                  onChange={e => setDimensions(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='battery'>
+                                    <Form.Label>Battery</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Battery Description'
+                                                  value={battery}
+                                                  onChange={e => setBattery(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='includesAdditional'>
+                                    <Form.Label>Package Includes</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Package includes'
+                                                  value={includesAdditional}
+                                                  onChange={e => setIncludesAdditions(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='sku'>
+                                    <Form.Label>Sku</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter product sku'
+                                                  value={sku}
+                                                  onChange={e => setSku(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group controlId='discountable'>
+                                    <Form.Check type='checkbox'
+                                                label='Discountable'
+                                                checked={discountable}
+                                                onChange={e => setDiscountable(e.target.checked)}>
+                                    </Form.Check>
                                 </Form.Group>
 
                                 <Button type='submit' variant='outline-primary'>Update</Button>
@@ -181,6 +396,15 @@ const AdminProductEditScreen = ({match, history}) => {
 };
 
 export default AdminProductEditScreen;
+
+// <Form.Group controlId='category'>
+//     <Form.Label>Category</Form.Label>
+//     <Form.Control type='text'
+//                   placeholder='Enter category'
+//                   value={category}
+//                   onChange={e => setCategory(e.target.value)}>
+//     </Form.Control>
+// </Form.Group>
 
 // import React, {useState, useEffect} from 'react';
 // import {Link} from "react-router-dom";
@@ -343,11 +567,11 @@ export default AdminProductEditScreen;
 //                                 <Form.Group>
 //                                     <Form.Label>Category</Form.Label>
 //                                     <Form.Control as='select' value={category}
-//                                                   onChange={(e) => setCategory(e.target.value)}>
-//                                         {categories && categories.map(cat => (
-//                                             <option key={cat._id} value={cat.name}>{cat.name}</option>))}
+//                                                    onChange={(e) => setCategory(e.target.value)}>
+//                                          {categories && categories.map(cat => (
+//                                              <option key={cat._id} value={cat.name}>{cat.name}</option>))}
 //
-//                                     </Form.Control>
+//                                      </Form.Control>
 //                                 </Form.Group>
 //
 //                                 <Form.Group controlId='description'>

@@ -19,13 +19,15 @@ import AdminProductListScreen from "./screens/AdminProductListScreen";
 import AdminProductEditScreen from "./screens/AdminProductEditScreen";
 import AdminOrderListScreen from "./screens/AdminOrdersListScreen";
 import AdminCategoryListScreen from "./screens/AdminCategoryListScreen";
-import AdminCreateCategory from "./screens/AdminCreateCategory";
+import AdminEditScaleScreen from "./screens/AdminEditScaleScreen";
+import Demo from "./components/Demo";
 
 const App = () => {
     return (
         <Router>
             <Header/>
             <main className='py-4'>
+                <Demo/>
                 <Container>
                     <Route path='/admin/orderlist' component={AdminOrderListScreen} />
                     <Route path='/order/:id' component={OrderDetailsScreen} />
@@ -37,8 +39,8 @@ const App = () => {
                     <Route path='/profile' component={ProfileScreen} />
                     <Route path='/product/:id' component={ProductScreen} />
                     <Route path='/cart/:id?' component={CartScreen} />
-                    <Route path='/admin/categorylist' component={AdminCategoryListScreen} />
-                    <Route path='/admin/category/create' component={AdminCreateCategory} />
+                    <Route path='/admin/categorylist' component={AdminCategoryListScreen} exact/>
+                    <Route path='/admin/scales/:id/edit' component={AdminEditScaleScreen} />
                     <Route path='/admin/userlist' component={AdminUserListScreen} />
                     <Route path='/admin/users/:id/edit' component={AdminUserEditScreen} />
                     <Route path='/admin/productlist' component={AdminProductListScreen} exact />

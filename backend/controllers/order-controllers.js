@@ -26,6 +26,7 @@ const generateOrder = asyncHandler(async (req, res) => {
         })
 
         const orderCreated = await order.save()
+        console.log(orderCreated)
         res.status(201).json(orderCreated)
     }
 })

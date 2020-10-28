@@ -18,8 +18,9 @@ const PlaceOrderScreen = ({history}) => {
     }
 
     // Calc total price of cart
+    cart.shippingPrice = addDeci(cart.cartItems.reduce((acc, item) => acc + item.shippingCost.toFixed(2) * item.quantity, 0).toFixed(2))
     cart.itemsPrice = addDeci(cart.cartItems.reduce((acc, item) => acc + item.price.toFixed(2) * item.quantity, 0).toFixed(2))
-    cart.shippingPrice = addDeci(cart.itemsPrice > 100 ? 0 : 10)
+    // cart.shippingPrice = addDeci(cart.itemsPrice > 100 ? 0 : 10)
     cart.taxPrice = addDeci(Number((0.07 * cart.itemsPrice).toFixed(2)))
     cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
 

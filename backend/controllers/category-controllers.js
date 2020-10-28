@@ -40,10 +40,13 @@ const deleteCategory = asyncHandler(async (req, res) => {
     let deletedCategory = await category.remove()
     res.json(deletedCategory)
 })
+
+
+
 export {
     getCategories,
     postNewCategory,
     updateCategory,
     getSingleCategory,
-    deleteCategory
+    deleteCategory,
 }

@@ -41,7 +41,7 @@ const AdminOrderListScreen = ({history, match}) => {
                         <th>Date</th>
                         <th>Total Price</th>
                         <th>Paid</th>
-                        <th>Delivered</th>
+                        <th>Shipped</th>
                         <th></th>
                     </tr>
                     </thead>

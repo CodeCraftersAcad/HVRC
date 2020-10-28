@@ -12,7 +12,8 @@ const {data} = await axios.get(`/api/products/${id}`)
             name: data.name,
             price: data.price,
             countInStock: data.countInStock,
-            quantity
+            shippingCost: data.shippingCost,
+            quantity,
         }
     })
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
