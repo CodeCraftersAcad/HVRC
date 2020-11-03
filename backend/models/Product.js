@@ -32,11 +32,11 @@ const ProductSchema = mongoose.Schema({
     },
     additionalName: {
         type: String,
-        required: true
+        required: false
     },
     shippingCost: {
         type: Number,
-        required: true
+        required: false
     },
     shippingTime: {
       type: String,
