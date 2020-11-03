@@ -12,6 +12,7 @@ const ProductScreen = ({history, match}) => {
     const [quantity, setQuantity] = useState(1)
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
+    const [chosenColor, setChosenColor] = useState('')
 
     const dispatch = useDispatch();
 
@@ -22,16 +23,18 @@ const ProductScreen = ({history, match}) => {
     const {userInfo} = userLogin
 
     const productReview = useSelector(state => state.productReview);
-    const {error: errorCreateReview, success: successCreateReview} = productReview
+    const {error: errorCreateReview, success: successCreateReview, loading: loadingProductReview} = productReview
 
     useEffect(() => {
         if (successCreateReview) {
-            alert('Review submitted')
             setRating(0)
             setComment('')
+        }
+        if (!product._id || product._id !== match.params.id) {
+
+            dispatch(listProductDetails(match.params.id))
             dispatch({type: PRODUCT_REVIEW_RESET})
         }
-        dispatch(listProductDetails(match.params.id))
     }, [dispatch, match, successCreateReview])
 
     const addToCart = () => {
@@ -51,7 +54,7 @@ const ProductScreen = ({history, match}) => {
             <Link className='btn btn-dark my-3' to='/'>Go Back</Link>
             {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (
                 <>
-                    <Row>
+                    <Row className='mb-4'>
                         <Col md={4}>
                             <Image src={product.image} alt={product.name} fluid/>
                         </Col>
@@ -105,15 +108,15 @@ const ProductScreen = ({history, match}) => {
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
-                                        <ListGroup.Item>
-                                            <Row>
-                                                <Col>
-                                                    Shipping Time:
-                                                </Col>
-                                                <Col>
-                                                    {product.shippingTime}
-                                                </Col>
-                                            </Row>
+                                    <ListGroup.Item>
+                                        <Row>
+                                            <Col>
+                                                Shipping Time:
+                                            </Col>
+                                            <Col>
+                                                {product.shippingTime}
+                                            </Col>
+                                        </Row>
                                     </ListGroup.Item>
                                     <ListGroup.Item>
                                         <Row>
@@ -153,7 +156,13 @@ const ProductScreen = ({history, match}) => {
                                             </Row>
                                         </ListGroup.Item>
                                     )}
-
+                                    <ListGroup.Item
+                                        type='text'
+                                        value={chosenColor}
+                                        onChange={e => setChosenColor(e.target.value)}
+                                        placeholder='Choose color if blank any color will be sent'
+                                        className='mr-sm-2 ml-sm-5'>
+                                    </ListGroup.Item>
                                     <ListGroup.Item>
                                         <Button className='btn-block' variant='outline-dark' type='button'
                                                 disabled={product.countInStock === 0}
@@ -164,47 +173,52 @@ const ProductScreen = ({history, match}) => {
                         </Col>
                     </Row>
                     <Row className='pt-2 pb-4'>
-                        <Col md={6} sm={12}>
+                        <Col md={12}>
                             <ListGroup.Item>
                                 <small><strong>Description:</strong></small> {product.description}
                             </ListGroup.Item>
                         </Col>
+                    </Row>
+                    <Row>
                         <Col md={6} sm={12}>
                             <Table striped bordered hover responsive className='table-sm'>
                                 <thead>
                                 <tr>
-                                    <th>Scale</th>
-                                    <th>Dimension</th>
-                                    <th>Weight</th>
-                                    <th>Package Includes</th>
+                                    {product.scale && <th>Scale</th>}
+                                    {product.dimensions && <th>Dimension</th>}
+                                    {product.weight && <th>Weight</th>}
+                                    {product.colors && <th>Color(s)</th>}
+                                    {product.includesAdditional && <th>Package Includes</th>}
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <td>{product.scale}</td>
-                                <td>{product.dimensions}</td>
-                                <td>{product.weight} (lbs)</td>
-                                <td>{product.includesAdditional}</td>
+                                {product.scale && <td>{product.scale}</td>}
+                                {product.dimensions && <td>{product.dimensions}</td>}
+                                {product.weight && <td>{product.weight} (lbs)</td>}
+                                {product.colors && <td>{product.colors} (lbs)</td>}
+                                {product.includesAdditional && <td>{product.includesAdditional}</td>}
                                 </tbody>
                             </Table>
+                        </Col>
+                        <Col md={6} sm={12}>
                             <Table striped bordered hover responsive className='table-sm'>
                                 <thead>
                                 <tr>
-                                    <th>Power Type</th>
-                                    <th>Motor</th>
-                                    <th>Battery</th>
+                                    {product.powerType && <th>Power Type</th>}
+                                    {product.motor && <th>Motor</th>}
+                                    {product.battery && <th>Battery</th>}
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <td>{product.powerType}</td>
-                                <td>{product.motor}</td>
-                                <td>{product.battery}</td>
+                                {product.powerType && <td>{product.powerType}</td>}
+                                {product.motor && <td>{product.motor}</td>}
+                                {product.battery && <td>{product.battery}</td>}
                                 </tbody>
                             </Table>
                         </Col>
                     </Row>
-
                     <Row>
-                        <Col md={6}>
+                        <Col md={8}>
                             <h2> Reviews </h2>
                             {product.reviews.length === 0 &&
                             <Message>No reviews. Bet the first to leave a review.</Message>}
@@ -219,6 +233,10 @@ const ProductScreen = ({history, match}) => {
                                 ))}
                                 <ListGroup.Item>
                                     <h6>Leave a review</h6>
+                                    {successCreateReview && <Message variant='success'>
+                                        Thank you for your review
+                                    </Message>}
+                                    {loadingProductReview && <Loader/>}
                                     {errorCreateReview && <Message variant='danger'>{errorCreateReview}</Message>}
                                     {userInfo ? (
                                         <Form onSubmit={submitReview}>
@@ -243,7 +261,7 @@ const ProductScreen = ({history, match}) => {
                                                               onChange={e => setComment(e.target.value)}>
                                                 </Form.Control>
                                             </Form.Group>
-                                            <Button type='submit' variant='outline-dark'>Submit Review</Button>
+                                            <Button type='submit' variant='outline-dark' disabled={loadingProductReview}>Submit Review</Button>
                                         </Form>
                                     ) : <Message><Link to='/login'>
                                         Login to leave a comment

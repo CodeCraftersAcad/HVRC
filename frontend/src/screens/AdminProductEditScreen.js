@@ -8,7 +8,7 @@ import {listProductDetails, adminUpdateSingleProduct} from "../actions/product-a
 import FormContainer from "../components/form-container";
 import {PRODUCT_UPDATE_RESET} from "../constants/product-contstants";
 import axios from 'axios'
-import {listCategories} from "../actions/category-actions";
+import {listCategories, listScale} from "../actions/category-actions";
 
 const AdminProductEditScreen = ({match, history}) => {
     const productId = match.params.id
@@ -46,6 +46,9 @@ const AdminProductEditScreen = ({match, history}) => {
     const adminProductUpdate = useSelector(state => state.adminProductUpdate);
     const {loading: adminLoadingProductUpdate, error: adminProductUpdateError, success: successAdminProductUpdate} = adminProductUpdate;
 
+    const getScales = useSelector(state => state.getScales)
+    const {loading: loadingAllScales, scales, error: errorGettingScales} = getScales
+
     const getCategories = useSelector(state => state.getCategories)
     const {loading: loadingCategories, categories, error: errorCategories} = getCategories
 
@@ -58,6 +61,7 @@ const AdminProductEditScreen = ({match, history}) => {
             if (!product.name || product._id !== productId) {
                 dispatch(listProductDetails(productId))
                 dispatch(listCategories())
+                dispatch(listScale())
             } else {
                 setName(product.name)
                 setAdditionalName(product.additionalName)
@@ -83,6 +87,7 @@ const AdminProductEditScreen = ({match, history}) => {
                 setColors(product.colors)
                 setShippingCost(product.shippingCost)
                 setShippingTime(product.shippingTime)
+
             }
         }
     }, [dispatch, productId, product, history, successAdminProductUpdate])
@@ -184,14 +189,14 @@ const AdminProductEditScreen = ({match, history}) => {
                                     </Form.Control>
                                 </Form.Group>
 
-                                <Form.Group controlId='scale'>
-                                    <Form.Label>Scale</Form.Label>
-                                    <Form.Control type='text'
-                                                  placeholder='Enter scale'
-                                                  value={scale}
-                                                  onChange={e => setScale(e.target.value)}>
-                                    </Form.Control>
-                                </Form.Group>
+                                {/*<Form.Group controlId='scale'>*/}
+                                {/*    <Form.Label>Scale</Form.Label>*/}
+                                {/*    <Form.Control type='text'*/}
+                                {/*                  placeholder='Enter scale'*/}
+                                {/*                  value={scale}*/}
+                                {/*                  onChange={e => setScale(e.target.value)}>*/}
+                                {/*    </Form.Control>*/}
+                                {/*</Form.Group>*/}
 
                                 <Form.Group controlId='subCategory'>
                                     <Form.Label>Sub-Category</Form.Label>
@@ -290,15 +295,15 @@ const AdminProductEditScreen = ({match, history}) => {
                                     </Form.Control>
                                 </Form.Group>
 
-                                {/*<Form.Group controlId='scale'>*/}
-                                {/*    <Form.Label>Category</Form.Label>*/}
-                                {/*    <Form.Control as='select' value={scale}*/}
-                                {/*                  onChange={(e) => setScale(e.target.value)}>*/}
-                                {/*        /!*{scales && scales.map(scale => (*!/*/}
-                                {/*        /!*    <option key={scale._id} value={scale.name}>{scale.name}</option>))}*!/*/}
+                                <Form.Group controlId='scale'>
+                                    <Form.Label>Scale</Form.Label>
+                                    <Form.Control as='select' value={scale}
+                                                  onChange={(e) => setScale(e.target.value)}>
+                                        {scales && scales.map(scale => (
+                                            <option key={scale._id} value={scale.name}>{scale.name}</option>))}
 
-                                {/*    </Form.Control>*/}
-                                {/*</Form.Group>*/}
+                                    </Form.Control>
+                                </Form.Group>
 
                                 <Form.Group controlId='description'>
                                     <Form.Label>Description</Form.Label>

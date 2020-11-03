@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {Form} from "react-bootstrap";
-import {Container, Row, Col, Button} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {adminCreateNewCategory, adminUpdateSingleScale, listScaleDetails} from "../actions/category-actions";
+import {adminUpdateSingleScale, listScaleDetails} from "../actions/category-actions";
 import Message from "../components/message";
 import {Link} from "react-router-dom";
 import Loader from "../components/Loader";

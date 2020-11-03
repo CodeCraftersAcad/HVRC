@@ -157,6 +157,10 @@ const ProductSchema = mongoose.Schema({
     colors: {
         type: String,
         required: false
+    },
+    chosenColor: {
+        type: String,
+        required: false
     }
 }, {timestamps: true})
 

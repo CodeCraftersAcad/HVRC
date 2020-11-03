@@ -96,7 +96,7 @@ const createMewProduct = asyncHandler(async (req, res) => {
         discountable: false,
         colors: '',
         shippingCost: 0,
-        shippingTime: ''
+        shippingTime: '',
     })
 
     const createdProduct = await product.save()
