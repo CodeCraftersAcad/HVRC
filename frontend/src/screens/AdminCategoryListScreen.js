@@ -145,6 +145,7 @@ const AdminCategoryListScreen = ({match, history}) => {
         // Success updating brand
         if (successUpdateBrand) {
             dispatch({type: BRAND_UPDATE_RESET})
+            history.push('/admin/categorylist')
         }
         // Success deleting scale
         if (successDeleteBrand) {

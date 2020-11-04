@@ -232,7 +232,7 @@ export const brandUpdateReducer = (state = {brand: {}}, action) => {
             return {loading: false, error: action.payload}
         case BRAND_UPDATE_RESET:
             return {
-                scale: {}
+                brand: {}
             }
         default:
             return state

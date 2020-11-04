@@ -9,7 +9,7 @@ import Product from '../models/Product.js'
 */
 const getAllProducts = asyncHandler(async (req, res) => {
     // Pagination set number for pagination
-    const pageSize = 10
+    const pageSize = 12
     const page = Number(req.query.pageNumber) || 1
 
     // Query for keyword in the url or set it to empty object

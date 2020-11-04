@@ -61,15 +61,13 @@ const ProductScreen = ({history, match}) => {
                         <Col md={4}>
                             <ListGroup variant='flush'>
                                 <ListGroup.Item>
-                                    <h2>{product.name}, {product.additionalName}</h2>
+                                    <h2>{product.name} {product.additionalName}</h2>
                                     <h4>SKU: {product.sku}</h4>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Rating text={`${product.numReviews}`} reviews value={product.rating}/>
                                 </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Price: ${product.price}
-                                </ListGroup.Item>
+
                                 <ListGroup.Item>
                                     Sub-Category: {product.subCategory}
                                 </ListGroup.Item>
@@ -84,7 +82,7 @@ const ProductScreen = ({history, match}) => {
                                                 Price:
                                             </Col>
                                             <Col>
-                                                <strong>{product.price}</strong>
+                                                <strong>${product.price}</strong>
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
@@ -180,7 +178,7 @@ const ProductScreen = ({history, match}) => {
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                             <ListGroup.Item>
-                                <strong>Other Information:</strong>{product.other}
+                                <strong>Other Information: </strong>{product.other}
                             </ListGroup.Item>
                         </Col>
                     </Row>
@@ -199,8 +197,8 @@ const ProductScreen = ({history, match}) => {
                                 <tbody>
                                 {product.scale && <td>{product.scale}</td>}
                                 {product.dimensions && <td>{product.dimensions}</td>}
-                                {product.weight && <td>{product.weight} (lbs)</td>}
-                                {product.colors && <td>{product.colors} (lbs)</td>}
+                                {product.weight && <td>{product.weight}</td>}
+                                {product.colors && <td>{product.colors}</td>}
                                 {product.includesAdditional && <td>{product.includesAdditional}</td>}
                                 </tbody>
                             </Table>
