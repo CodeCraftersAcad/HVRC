@@ -30,14 +30,14 @@ const postNewScale = asyncHandler(async (req, res) => {
 })
 
 const updateScale = asyncHandler(async (req, res) => {
-    let category = await Scale.findById(req.params.id)
-    category.name = req.body.name || category.name
-    if (!category) {
+    let scale = await Scale.findById(req.params.id)
+    scale.name = req.body.name || scale.name
+    if (!scale) {
         res.status(400)
         throw new Error('Category not found')
     }
-    let updatedCategory = await category.save()
-    res.json(updatedCategory)
+    let updatedScale = await scale.save()
+    res.json(updatedScale)
 })
 
 const deleteScale = asyncHandler(async (req, res) => {

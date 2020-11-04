@@ -2,42 +2,42 @@ import React, {useState, useEffect} from 'react';
 import {Form} from "react-bootstrap";
 import {Button} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {adminUpdateSingleScale, listScaleDetails} from "../actions/category-actions";
+import {adminUpdateSingleBrand, brandDetails} from "../actions/category-actions";
 import Message from "../components/message";
 import {Link} from "react-router-dom";
 import Loader from "../components/Loader";
 import FormContainer from "../components/form-container";
-import {SCALE_UPDATE_RESET} from "../constants/categories-constants";
+import {BRAND_UPDATE_RESET,} from "../constants/categories-constants";
 
-const AdminEditScaleScreen = ({match, history}) => {
-    const scaleId = match.params.id
+const AdminBrandEditScreen = ({match, history}) => {
+    const brandId = match.params.id
     const [name, setName] = useState('')
     const dispatch = useDispatch()
 
-    const scaleDetails = (useSelector(state => state.scaleDetails))
-    const {loading, error: errorDetails, scale} = scaleDetails
+    const listBrandDetails = (useSelector(state => state.listBrandDetails))
+    const {loading, error: errorDetails, brand} = listBrandDetails
 
 
-    const updateScale = (useSelector(state => state.updateScale))
-    const {loading: loadingScaleUpdate, error: errorUpdateSuccess, success: updateScaleSuccess} = updateScale
+    const updateBrand = (useSelector(state => state.updateBrand))
+    const {loading: loadingBrandUpdate, error: errorUpdateSuccess, success: updateBrandSuccess} = updateBrand
 
     useEffect(() => {
-        if (updateScaleSuccess) {
+        if (updateBrandSuccess) {
             history.push('/admin/categorylist')
         } else {
-            if (!scale.name || scale._id !== scaleId) {
-                dispatch(listScaleDetails(scaleId))
+            if (!brand.name || brand._id !== brandId) {
+                dispatch(brandDetails(brandId))
             } else {
-    dispatch({type: SCALE_UPDATE_RESET})
-                setName(scale.name)
+                dispatch({type: BRAND_UPDATE_RESET})
+                setName(brand.name)
             }
         }
-    }, [dispatch, history, updateScaleSuccess, scale, scaleId])
+    }, [dispatch, history, updateBrandSuccess, brand, brandId])
 
     const updateCategory = e => {
         e.preventDefault()
-        dispatch(adminUpdateSingleScale({
-            _id: scaleId,
+        dispatch(adminUpdateSingleBrand({
+            _id: brandId,
             name
         }))
     }
@@ -48,8 +48,8 @@ const AdminEditScaleScreen = ({match, history}) => {
             </Link>
             {errorDetails && <Message variant='danger'>{errorDetails}</Message>}
             <FormContainer>
-                <h1>Edit Category</h1>
-                {loadingScaleUpdate && <Loader/>}
+                <h1>Edit Brand</h1>
+                {loadingBrandUpdate && <Loader/>}
                 {errorUpdateSuccess && <Message variant='danger'>{errorUpdateSuccess}</Message>}
                 {loading
                     ? <Loader/>
@@ -58,9 +58,9 @@ const AdminEditScaleScreen = ({match, history}) => {
                         : (
                             <Form onSubmit={updateCategory}>
 
-                                <Form.Group controlId='scale'>
+                                <Form.Group controlId='brand'>
                                     <Form.Control type='text'
-                                                  placeholder='Enter scale'
+                                                  placeholder='Enter brand'
                                                   value={name}
                                                   onChange={e => setName(e.target.value)}>
                                     </Form.Control>
@@ -73,4 +73,4 @@ const AdminEditScaleScreen = ({match, history}) => {
     );
 };
 
-export default AdminEditScaleScreen;
+export default AdminBrandEditScreen;

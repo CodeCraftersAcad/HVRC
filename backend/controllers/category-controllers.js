@@ -11,7 +11,7 @@ const getCategories = asyncHandler(async (req, res) => {
 })
 
 const postNewCategory = asyncHandler(async (req, res) => {
-    let category = await Categories.create({name: req.body.category})
+    let category = await Categories.create({name: 'Sample Category'})
     res.status(201).json(category)
 })
 

@@ -2,42 +2,45 @@ import React, {useState, useEffect} from 'react';
 import {Form} from "react-bootstrap";
 import {Button} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {adminUpdateSingleScale, listScaleDetails} from "../actions/category-actions";
+import {
+    adminUpdateSingleCategory,
+    listCategoryDetails,
+
+} from "../actions/category-actions";
 import Message from "../components/message";
 import {Link} from "react-router-dom";
 import Loader from "../components/Loader";
 import FormContainer from "../components/form-container";
-import {SCALE_UPDATE_RESET} from "../constants/categories-constants";
+import {CATEGORY_UPDATE_RESET, SCALE_UPDATE_RESET} from "../constants/categories-constants";
 
-const AdminEditScaleScreen = ({match, history}) => {
-    const scaleId = match.params.id
+const AdminEditCategoryScreen = ({match, history}) => {
+    const categoryId = match.params.id
     const [name, setName] = useState('')
     const dispatch = useDispatch()
 
-    const scaleDetails = (useSelector(state => state.scaleDetails))
-    const {loading, error: errorDetails, scale} = scaleDetails
+    const categoryDetails = (useSelector(state => state.categoryDetails))
+    const {loading, error: errorDetails, category} = categoryDetails
 
-
-    const updateScale = (useSelector(state => state.updateScale))
-    const {loading: loadingScaleUpdate, error: errorUpdateSuccess, success: updateScaleSuccess} = updateScale
+    const update = (useSelector(state => state.updateCategory))
+    const {loading: loadingCategoryUpdate, error: errorUpdateCategory, success: updateCategorySuccess} = update
 
     useEffect(() => {
-        if (updateScaleSuccess) {
+        if (updateCategorySuccess) {
             history.push('/admin/categorylist')
         } else {
-            if (!scale.name || scale._id !== scaleId) {
-                dispatch(listScaleDetails(scaleId))
+            if (!category.name || category._id !== categoryId) {
+                dispatch(listCategoryDetails(categoryId))
             } else {
-    dispatch({type: SCALE_UPDATE_RESET})
-                setName(scale.name)
+                dispatch({type: CATEGORY_UPDATE_RESET})
+                setName(category.name)
             }
         }
-    }, [dispatch, history, updateScaleSuccess, scale, scaleId])
+    }, [dispatch, history, updateCategorySuccess, category, categoryId])
 
     const updateCategory = e => {
         e.preventDefault()
-        dispatch(adminUpdateSingleScale({
-            _id: scaleId,
+        dispatch(adminUpdateSingleCategory({
+            _id: categoryId,
             name
         }))
     }
@@ -49,8 +52,8 @@ const AdminEditScaleScreen = ({match, history}) => {
             {errorDetails && <Message variant='danger'>{errorDetails}</Message>}
             <FormContainer>
                 <h1>Edit Category</h1>
-                {loadingScaleUpdate && <Loader/>}
-                {errorUpdateSuccess && <Message variant='danger'>{errorUpdateSuccess}</Message>}
+                {loadingCategoryUpdate && <Loader/>}
+                {errorUpdateCategory && <Message variant='danger'>{errorUpdateCategory}</Message>}
                 {loading
                     ? <Loader/>
                     : errorDetails
@@ -73,4 +76,4 @@ const AdminEditScaleScreen = ({match, history}) => {
     );
 };
 
-export default AdminEditScaleScreen;
+export default AdminEditCategoryScreen;

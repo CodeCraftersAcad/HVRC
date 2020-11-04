@@ -1,11 +1,54 @@
 import {
-    GET_ALL_CATEGORIES_REQUEST, GET_ALL_CATEGORIES_SUCCESS, GET_ALL_CATEGORIES_FAIL,
-    CATEGORY_CREATE_REQUEST, CATEGORY_CREATE_SUCCESS, CATEGORY_CREATE_FAIL, CATEGORY_CREATE_RESET,
-    DELETE_CATEGORY_REQUEST, DELETE_CATEGORY_SUCCESS, DELETE_CATEGORY_FAIL, CATEGORY_UPDATE_REQUEST,
-    CATEGORY_UPDATE_SUCCESS, CATEGORY_UPDATE_FAIL, CATEGORY_UPDATE_RESET, GET_ALL_SCALES_SUCCESS, GET_ALL_SCALES_REQUEST,
-    GET_ALL_SCALES_FAIL, SCALE_UPDATE_REQUEST, SCALE_UPDATE_SUCCESS, SCALE_UPDATE_FAIL, SCALE_UPDATE_RESET, SCALE_CREATE_REQUEST, SCALE_CREATE_SUCCESS,
-    SCALE_CREATE_FAIL, SCALE_CREATE_RESET, DELETE_SCALE_REQUEST, DELETE_SCALE_SUCCESS, DELETE_SCALE_FAIL, SCALE_DETAILS_REQUEST,
-    SCALE_DETAILS_SUCCESS, SCALE_DETAILS_FAIL
+    GET_ALL_CATEGORIES_REQUEST,
+    GET_ALL_CATEGORIES_SUCCESS,
+    GET_ALL_CATEGORIES_FAIL,
+    CATEGORY_CREATE_REQUEST,
+    CATEGORY_CREATE_SUCCESS,
+    CATEGORY_CREATE_FAIL,
+    CATEGORY_CREATE_RESET,
+    DELETE_CATEGORY_REQUEST,
+    DELETE_CATEGORY_SUCCESS,
+    DELETE_CATEGORY_FAIL,
+    CATEGORY_UPDATE_REQUEST,
+    CATEGORY_UPDATE_SUCCESS,
+    CATEGORY_UPDATE_FAIL,
+    CATEGORY_UPDATE_RESET,
+    GET_ALL_SCALES_SUCCESS,
+    GET_ALL_SCALES_REQUEST,
+    GET_ALL_SCALES_FAIL,
+    SCALE_UPDATE_REQUEST,
+    SCALE_UPDATE_SUCCESS,
+    SCALE_UPDATE_FAIL,
+    SCALE_UPDATE_RESET,
+    SCALE_CREATE_REQUEST,
+    SCALE_CREATE_SUCCESS,
+    SCALE_CREATE_FAIL,
+    SCALE_CREATE_RESET,
+    DELETE_SCALE_REQUEST,
+    DELETE_SCALE_SUCCESS,
+    DELETE_SCALE_FAIL,
+    SCALE_DETAILS_REQUEST,
+    SCALE_DETAILS_SUCCESS,
+    SCALE_DETAILS_FAIL,
+    DELETE_SCALE_RESET,
+    DELETE_CATEGORY_RESET,
+    CATEGORY_DETAILS_REQUEST,
+    CATEGORY_DETAILS_SUCCESS,
+    CATEGORY_DETAILS_FAIL,
+    GET_ALL_BRANDS_REQUEST,
+    GET_ALL_BRANDS_SUCCESS,
+    GET_ALL_BRANDS_FAIL,
+    BRAND_DETAILS_REQUEST,
+    BRAND_DETAILS_SUCCESS,
+    BRAND_DETAILS_FAIL,
+    BRAND_UPDATE_REQUEST,
+    BRAND_UPDATE_SUCCESS,
+    BRAND_UPDATE_FAIL,
+    BRAND_UPDATE_RESET,
+    DELETE_BRAND_REQUEST,
+    DELETE_BRAND_SUCCESS,
+    DELETE_BRAND_FAIL,
+    DELETE_BRAND_RESET, BRAND_CREATE_REQUEST, BRAND_CREATE_SUCCESS, BRAND_CREATE_FAIL, BRAND_CREATE_RESET
 } from "../constants/categories-constants";
 
 
@@ -52,6 +95,19 @@ export const categoryCreateReducer = (state = {}, action) => {
     }
 }
 
+export const categoryDetailsReducer = (state = {category: {}}, action) => {
+    switch (action.type) {
+        case CATEGORY_DETAILS_REQUEST:
+            return {loading: true, ...state}
+        case CATEGORY_DETAILS_SUCCESS:
+            return {loading: false, category: action.payload}
+        case CATEGORY_DETAILS_FAIL:
+            return {loading: false, error: action.payload}
+        default:
+            return state
+    }
+}
+
 export const categoryDeleteReducer = (state = {}, action) => {
     switch (action.type) {
         case DELETE_CATEGORY_REQUEST:
@@ -60,6 +116,8 @@ export const categoryDeleteReducer = (state = {}, action) => {
             return {loading: false, success: true}
         case DELETE_CATEGORY_FAIL:
             return {loading: false, error: action.payload}
+        case DELETE_CATEGORY_RESET:
+            return {}
         default:
             return state
     }
@@ -122,6 +180,7 @@ export const scaleCreateReducer = (state = {}, action) => {
             return state
     }
 }
+
 export const scaleDeleteReducer = (state = {}, action) => {
     switch (action.type) {
         case DELETE_SCALE_REQUEST:
@@ -130,6 +189,81 @@ export const scaleDeleteReducer = (state = {}, action) => {
             return {loading: false, success: true}
         case DELETE_SCALE_FAIL:
             return {loading: false, error: action.payload}
+        case DELETE_SCALE_RESET:
+            return {}
+        default:
+            return state
+    }
+}
+
+export const brandListReducer = (state = {brands: []}, action) => {
+    switch (action.type) {
+        case GET_ALL_BRANDS_REQUEST:
+            return {loading: true, brands: []}
+        case GET_ALL_BRANDS_SUCCESS:
+            return {loading: false, brands: action.payload}
+        case GET_ALL_BRANDS_FAIL:
+            return {loading: false, error: action.payload}
+        default:
+            return state
+    }
+}
+
+export const brandDetailsReducer = (state = {brand: {}}, action) => {
+    switch (action.type) {
+        case BRAND_DETAILS_REQUEST:
+            return {loading: true, ...state}
+        case BRAND_DETAILS_SUCCESS:
+            return {loading: false, brand: action.payload}
+        case BRAND_DETAILS_FAIL:
+            return {loading: false, error: action.payload}
+        default:
+            return state
+    }
+}
+
+export const brandUpdateReducer = (state = {brand: {}}, action) => {
+    switch (action.type) {
+        case BRAND_UPDATE_REQUEST:
+            return {loading: true, ...state}
+        case BRAND_UPDATE_SUCCESS:
+            return {loading: false, success: true, brand: action.payload}
+        case BRAND_UPDATE_FAIL:
+            return {loading: false, error: action.payload}
+        case BRAND_UPDATE_RESET:
+            return {
+                scale: {}
+            }
+        default:
+            return state
+    }
+}
+
+export const brandCreateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case BRAND_CREATE_REQUEST:
+            return {loading: true}
+        case BRAND_CREATE_SUCCESS:
+            return {loading: false, success: true, brand: action.payload}
+        case BRAND_CREATE_FAIL:
+            return {loading: false, error: action.payload}
+        case BRAND_CREATE_RESET:
+            return {}
+        default:
+            return state
+    }
+}
+
+export const brandDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DELETE_BRAND_REQUEST:
+            return {loading: true, ...state}
+        case DELETE_BRAND_SUCCESS:
+            return {loading: false, success: true}
+        case DELETE_BRAND_FAIL:
+            return {loading: false, error: action.payload}
+        case DELETE_BRAND_RESET:
+            return {}
         default:
             return state
     }

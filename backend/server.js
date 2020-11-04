@@ -17,6 +17,7 @@ import categoryRoutes from './routes/category-routes.js'
 import scaleRoutes from './routes/scale-routes.js'
 import userRoutes from './routes/user-routes.js';
 import orderRoutes from './routes/order-routes.js';
+import brandRoutes from './routes/brand-routes.js';
 import uploadRoutes from './routes/upload-routes.js';
 import {notFound, errorhandler} from "./middleware/errors.js";
 
@@ -41,6 +42,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/categories', categoryRoutes)
 app.use('/api/scales', scaleRoutes)
+app.use('/api/brands', brandRoutes)
 
 app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID)

@@ -8,7 +8,7 @@ import {listProductDetails, adminUpdateSingleProduct} from "../actions/product-a
 import FormContainer from "../components/form-container";
 import {PRODUCT_UPDATE_RESET} from "../constants/product-contstants";
 import axios from 'axios'
-import {listCategories, listScale} from "../actions/category-actions";
+import {listBrands, listCategories, listScale} from "../actions/category-actions";
 
 const AdminProductEditScreen = ({match, history}) => {
     const productId = match.params.id
@@ -49,6 +49,9 @@ const AdminProductEditScreen = ({match, history}) => {
     const getScales = useSelector(state => state.getScales)
     const {loading: loadingAllScales, scales, error: errorGettingScales} = getScales
 
+    const getBrands = useSelector(state => state.getBrands)
+    const {loading: loadingAllBrands, brands, error: errorGettingBrands} = getBrands
+
     const getCategories = useSelector(state => state.getCategories)
     const {loading: loadingCategories, categories, error: errorCategories} = getCategories
 
@@ -62,6 +65,7 @@ const AdminProductEditScreen = ({match, history}) => {
                 dispatch(listProductDetails(productId))
                 dispatch(listCategories())
                 dispatch(listScale())
+                dispatch(listBrands())
             } else {
                 setName(product.name)
                 setAdditionalName(product.additionalName)
@@ -154,6 +158,7 @@ const AdminProductEditScreen = ({match, history}) => {
                 <h1>Edit Product</h1>
                 {adminLoadingProductUpdate && <Loader/>}
                 {loadingCategories && <Loader/>}
+                {loadingAllBrands && <Loader/>}
                 {errorCategories && <Message variant='danger'>{errorCategories}</Message>}
                 {adminProductUpdateError && <Message variant='danger'>{adminProductUpdateError}</Message>}
                 {loading
@@ -249,12 +254,21 @@ const AdminProductEditScreen = ({match, history}) => {
                                     {uploading && <Loader/>}
                                 </Form.Group>
 
+                                {/*<Form.Group controlId='brand'>*/}
+                                {/*    <Form.Label>Brand</Form.Label>*/}
+                                {/*    <Form.Control type='text'*/}
+                                {/*                  placeholder='Enter brand'*/}
+                                {/*                  value={brand}*/}
+                                {/*                  onChange={e => setBrand(e.target.value)}>*/}
+                                {/*    </Form.Control>*/}
+                                {/*</Form.Group>*/}
+
                                 <Form.Group controlId='brand'>
                                     <Form.Label>Brand</Form.Label>
-                                    <Form.Control type='text'
-                                                  placeholder='Enter brand'
-                                                  value={brand}
-                                                  onChange={e => setBrand(e.target.value)}>
+                                    <Form.Control as='select' value={brand}
+                                                  onChange={(e) => setBrand(e.target.value)}>
+                                        {brands && brands.map(brand => (
+                                            <option key={brand._id} value={brand.name}>{brand.name}</option>))}
                                     </Form.Control>
                                 </Form.Group>
 

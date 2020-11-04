@@ -2,8 +2,21 @@ import {createStore, combineReducers, applyMiddleware} from "redux";
 import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {
-    categoryListReducer, categoryDeleteReducer, categoryCreateReducer, categoryUpdateReducer,
-    scaleCreateReducer, scaleListReducer, scaleUpdateReducer, scaleDeleteReducer, scaleDetailsReducer
+    categoryListReducer,
+    categoryDeleteReducer,
+    categoryCreateReducer,
+    categoryUpdateReducer,
+    scaleCreateReducer,
+    scaleListReducer,
+    scaleUpdateReducer,
+    scaleDeleteReducer,
+    scaleDetailsReducer,
+    categoryDetailsReducer,
+    brandListReducer,
+    brandDeleteReducer,
+    brandCreateReducer,
+    brandUpdateReducer,
+    brandDetailsReducer
 } from "./reducers/category-reducers";
 import {
     productListReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer,
@@ -21,9 +34,15 @@ import {
 
 
 const reducer = combineReducers({
+    getBrands: brandListReducer,
+    listBrandDetails: brandDetailsReducer,
+    createBrand: brandCreateReducer,
+    updateBrand: brandUpdateReducer,
+    deleteBrand: brandDeleteReducer,
     updateCategory: categoryUpdateReducer,
     getCategories: categoryListReducer,
     createCategory: categoryCreateReducer,
+    categoryDetails: categoryDetailsReducer,
     deleteCategory: categoryDeleteReducer,
     updateScale: scaleUpdateReducer,
     getScales: scaleListReducer,
