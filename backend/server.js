@@ -14,6 +14,7 @@ dotenv.config();
 import connectDb from './config/db.js';
 import productRoutes from './routes/product-routes.js';
 import categoryRoutes from './routes/category-routes.js'
+import colorRoutes from './routes/color-routes.js'
 import scaleRoutes from './routes/scale-routes.js'
 import userRoutes from './routes/user-routes.js';
 import orderRoutes from './routes/order-routes.js';
@@ -43,6 +44,8 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/categories', categoryRoutes)
 app.use('/api/scales', scaleRoutes)
 app.use('/api/brands', brandRoutes)
+app.use('/api/colors', colorRoutes)
+
 
 app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID)

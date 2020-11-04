@@ -16,7 +16,12 @@ import {
     brandDeleteReducer,
     brandCreateReducer,
     brandUpdateReducer,
-    brandDetailsReducer
+    brandDetailsReducer,
+    colorListReducer,
+    colorDetailsReducer,
+    colorUpdateReducer,
+    colorCreateReducer,
+    colorDeleteReducer
 } from "./reducers/category-reducers";
 import {
     productListReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer,
@@ -34,6 +39,11 @@ import {
 
 
 const reducer = combineReducers({
+    getAllColors: colorListReducer,
+    getColorDetails: colorDetailsReducer,
+    createColor: colorCreateReducer,
+    updateColor: colorUpdateReducer,
+    deleteColor: colorDeleteReducer,
     getBrands: brandListReducer,
     listBrandDetails: brandDetailsReducer,
     createBrand: brandCreateReducer,

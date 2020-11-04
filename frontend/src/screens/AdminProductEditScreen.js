@@ -8,7 +8,7 @@ import {listProductDetails, adminUpdateSingleProduct} from "../actions/product-a
 import FormContainer from "../components/form-container";
 import {PRODUCT_UPDATE_RESET} from "../constants/product-contstants";
 import axios from 'axios'
-import {listBrands, listCategories, listScale} from "../actions/category-actions";
+import {listBrands, listCategories, listColors, listScale} from "../actions/category-actions";
 
 const AdminProductEditScreen = ({match, history}) => {
     const productId = match.params.id
@@ -34,7 +34,7 @@ const AdminProductEditScreen = ({match, history}) => {
     const [productIdNumber, setProductIdNumber] = useState('')
     const [weight, setWeight] = useState('')
     const [subCategory, setSubCategory] = useState('')
-    const [colors, setColors] = useState('')
+    const [color, setColor] = useState('')
     const [shippingCost, setShippingCost] = useState(0)
     const [shippingTime, setShippingTime] = useState('')
 
@@ -48,6 +48,9 @@ const AdminProductEditScreen = ({match, history}) => {
 
     const getScales = useSelector(state => state.getScales)
     const {loading: loadingAllScales, scales, error: errorGettingScales} = getScales
+
+    const getAllColors = useSelector(state => state.getAllColors)
+    const {loading: loadingAllColors, colors, error: errorGettingColors} = getAllColors
 
     const getBrands = useSelector(state => state.getBrands)
     const {loading: loadingAllBrands, brands, error: errorGettingBrands} = getBrands
@@ -66,6 +69,7 @@ const AdminProductEditScreen = ({match, history}) => {
                 dispatch(listCategories())
                 dispatch(listScale())
                 dispatch(listBrands())
+                dispatch(listColors())
             } else {
                 setName(product.name)
                 setAdditionalName(product.additionalName)
@@ -88,7 +92,7 @@ const AdminProductEditScreen = ({match, history}) => {
                 setProductIdNumber(product.productIdNumber)
                 setWeight(product.weight)
                 setSubCategory(product.subCategory)
-                setColors(product.colors)
+                setColor(product.colors)
                 setShippingCost(product.shippingCost)
                 setShippingTime(product.shippingTime)
 
@@ -281,12 +285,22 @@ const AdminProductEditScreen = ({match, history}) => {
                                     </Form.Control>
                                 </Form.Group>
 
-                                <Form.Group controlId='colors'>
+                                {/*<Form.Group controlId='colors'>*/}
+                                {/*    <Form.Label>Colors</Form.Label>*/}
+                                {/*    <Form.Control type='text'*/}
+                                {/*                  placeholder='Enter product colors'*/}
+                                {/*                  value={colors}*/}
+                                {/*                  onChange={e => setColors(e.target.value)}>*/}
+                                {/*    </Form.Control>*/}
+                                {/*</Form.Group>*/}
+                                <Form.Group controlId='color'>
                                     <Form.Label>Colors</Form.Label>
-                                    <Form.Control type='text'
-                                                  placeholder='Enter product colors'
-                                                  value={colors}
-                                                  onChange={e => setColors(e.target.value)}>
+                                    <Form.Control as='select' value={color}
+                                                  onChange={(e) => setColor(e.target.value)}>
+                                        <option key='1' value='Set Color'>Select a color</option>
+                                        {colors && colors.map(color => (
+                                            <option key={color._id} value={color.name}>{color.name}</option>))}
+
                                     </Form.Control>
                                 </Form.Group>
 
@@ -303,6 +317,7 @@ const AdminProductEditScreen = ({match, history}) => {
                                     <Form.Label>Category</Form.Label>
                                     <Form.Control as='select' value={category}
                                                   onChange={(e) => setCategory(e.target.value)}>
+                                            <option key='1' value='Set Category'>Select a category</option>
                                         {categories && categories.map(cat => (
                                             <option key={cat._id} value={cat.name}>{cat.name}</option>))}
 
@@ -313,6 +328,7 @@ const AdminProductEditScreen = ({match, history}) => {
                                     <Form.Label>Scale</Form.Label>
                                     <Form.Control as='select' value={scale}
                                                   onChange={(e) => setScale(e.target.value)}>
+                                        <option key='1' value='Set Scale'>Select a scale</option>
                                         {scales && scales.map(scale => (
                                             <option key={scale._id} value={scale.name}>{scale.name}</option>))}
 

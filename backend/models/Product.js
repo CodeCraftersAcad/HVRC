@@ -161,6 +161,11 @@ const ProductSchema = mongoose.Schema({
     chosenColor: {
         type: String,
         required: false
+    },
+    warranty: {
+        type: String,
+        required: false,
+        trim: true
     }
 }, {timestamps: true})
 

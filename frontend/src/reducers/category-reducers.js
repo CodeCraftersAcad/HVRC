@@ -48,7 +48,28 @@ import {
     DELETE_BRAND_REQUEST,
     DELETE_BRAND_SUCCESS,
     DELETE_BRAND_FAIL,
-    DELETE_BRAND_RESET, BRAND_CREATE_REQUEST, BRAND_CREATE_SUCCESS, BRAND_CREATE_FAIL, BRAND_CREATE_RESET
+    DELETE_BRAND_RESET,
+    BRAND_CREATE_REQUEST,
+    BRAND_CREATE_SUCCESS,
+    BRAND_CREATE_FAIL,
+    BRAND_CREATE_RESET,
+    GET_ALL_COLORS_REQUEST,
+    GET_ALL_COLORS_SUCCESS,
+    GET_ALL_COLORS_FAIL,
+    COLOR_DETAILS_SUCCESS,
+    COLOR_DETAILS_FAIL,
+    UPDATE_COLOR_REQUEST,
+    UPDATE_COLOR_SUCCESS,
+    UPDATE_COLOR_FAIL,
+    UPDATE_COLOR_RESET,
+    CREATE_COLOR_REQUEST,
+    CREATE_COLOR_SUCCESS,
+    CREATE_COLOR_FAIL,
+    CREATE_COLOR_RESET,
+    DELETE_COLOR_REQUEST,
+    DELETE_COLOR_SUCCESS,
+    DELETE_COLOR_FAIL,
+    DELETE_COLOR_RESET, COLOR_DETAILS_REQUEST
 } from "../constants/categories-constants";
 
 
@@ -263,6 +284,77 @@ export const brandDeleteReducer = (state = {}, action) => {
         case DELETE_BRAND_FAIL:
             return {loading: false, error: action.payload}
         case DELETE_BRAND_RESET:
+            return {}
+        default:
+            return state
+    }
+}
+
+export const colorListReducer = (state = {colors: []}, action) => {
+    switch (action.type) {
+        case GET_ALL_COLORS_REQUEST:
+            return {loading: true, colors: []}
+        case GET_ALL_COLORS_SUCCESS:
+            return {loading: false, colors: action.payload}
+        case GET_ALL_COLORS_FAIL:
+            return {loading: false, error: action.payload}
+        default:
+            return state
+    }
+}
+
+export const colorDetailsReducer = (state = {color: {}}, action) => {
+    switch (action.type) {
+        case COLOR_DETAILS_REQUEST:
+            return {loading: true, ...state}
+        case COLOR_DETAILS_SUCCESS:
+            return {loading: false, color: action.payload}
+        case COLOR_DETAILS_FAIL:
+            return {loading: false, error: action.payload}
+        default:
+            return state
+    }
+}
+
+export const colorUpdateReducer = (state = {color: {}}, action) => {
+    switch (action.type) {
+        case UPDATE_COLOR_REQUEST:
+            return {loading: true, ...state}
+        case UPDATE_COLOR_SUCCESS:
+            return {loading: false, success: true, color: action.payload}
+        case UPDATE_COLOR_FAIL:
+            return {loading: false, error: action.payload}
+        case UPDATE_COLOR_RESET:
+            return {color: {}}
+        default:
+            return state
+    }
+}
+
+export const colorCreateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case CREATE_COLOR_REQUEST:
+            return {loading: true}
+        case CREATE_COLOR_SUCCESS:
+            return {loading: false, success: true, color: action.payload}
+        case CREATE_COLOR_FAIL:
+            return {loading: false, error: action.payload}
+        case CREATE_COLOR_RESET:
+            return {}
+        default:
+            return state
+    }
+}
+
+export const colorDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DELETE_COLOR_REQUEST:
+            return {loading: true, ...state}
+        case DELETE_COLOR_SUCCESS:
+            return {loading: false, success: true}
+        case DELETE_COLOR_FAIL:
+            return {loading: false, error: action.payload}
+        case DELETE_COLOR_RESET:
             return {}
         default:
             return state

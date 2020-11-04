@@ -9,14 +9,19 @@ import {
     adminDeleteCategoryById,
     adminCreateNewScale,
     listScale,
-    adminDeleteScaleById, adminCreateNewCategory, adminCreateNewBrand, adminDeleteBrandById, listBrands
+    adminDeleteScaleById,
+    adminCreateNewCategory,
+    adminCreateNewBrand,
+    adminDeleteBrandById,
+    listBrands,
+    adminCreateNewColor, adminDeleteColorById, listColors
 } from "../actions/category-actions";
 import {
     BRAND_UPDATE_RESET,
-    CATEGORY_UPDATE_RESET, DELETE_BRAND_RESET, DELETE_CATEGORY_RESET,
+    CATEGORY_UPDATE_RESET, DELETE_BRAND_RESET, DELETE_CATEGORY_RESET, DELETE_COLOR_RESET,
     DELETE_SCALE_RESET,
     SCALE_CREATE_RESET,
-    SCALE_UPDATE_RESET
+    SCALE_UPDATE_RESET, UPDATE_COLOR_RESET
 } from "../constants/categories-constants";
 
 const AdminCategoryListScreen = ({match, history}) => {
@@ -68,6 +73,20 @@ const AdminCategoryListScreen = ({match, history}) => {
     const {loading: loadingDeleteBrand, error: errorDeleteBrand, success: successDeleteBrand} = deleteBrand
     // End brand state
 
+    // Color state
+    const getAllColors = useSelector(state => state.getAllColors)
+    const {loading: loadingAllColors, colors, error: errorGettingColors} = getAllColors
+
+    const createColor = useSelector(state => state.createColor)
+    const {loading: loadingCreateColor, error: errorCreatingColor, success: successCreatingColor, color} = createColor
+
+    const updateColor = useSelector(state => state.updateColor)
+    const {loading: loadingUpdateColor, success: successUpdateColor, scale: updatedColor} = updateColor
+
+    const deleteColor = (useSelector(state => state.deleteColor))
+    const {loading: loadingDeleteColor, error: errorDeleteColor, success: successDeleteColor} = deleteColor
+    // End color state
+
     // Scale action
     const createNewScale = () => {
         dispatch(adminCreateNewScale())
@@ -79,6 +98,18 @@ const AdminCategoryListScreen = ({match, history}) => {
         }
     }
     // End scale actions
+
+    // Color action
+    const createNewColor = () => {
+        dispatch(adminCreateNewColor())
+    }
+
+    const deleteColorById = (id) => {
+        if (window.confirm(`Are you sure you want to delete this color`)) {
+            dispatch(adminDeleteColorById(id))
+        }
+    }
+    // End color actions
 
     // Category actions
     const createNewCategory = () => {
@@ -108,10 +139,6 @@ const AdminCategoryListScreen = ({match, history}) => {
         if (!userInfo.isAdmin) history.push('/login')
         dispatch({type: SCALE_CREATE_RESET})
 
-        // Success updating scale
-        if (successUpdateScale) {
-            dispatch({type: SCALE_UPDATE_RESET})
-        }
         // Success deleting scale
         if (successDeleteScale) {
             dispatch({type: DELETE_SCALE_RESET})
@@ -125,6 +152,11 @@ const AdminCategoryListScreen = ({match, history}) => {
         }
 
         // Success updating scale
+        if (updateScale) {
+            dispatch({type: SCALE_UPDATE_RESET})
+        }
+
+        // Success updating category
         if (updateCategorySuccess) {
             dispatch({type: CATEGORY_UPDATE_RESET})
         }
@@ -158,33 +190,60 @@ const AdminCategoryListScreen = ({match, history}) => {
         } else {
             dispatch(listBrands())
         }
+        // Success updating color
+        if (successUpdateColor) {
+            dispatch({type: UPDATE_COLOR_RESET})
+        }
+
+        // Success deleting color
+        if (successDeleteColor) {
+            dispatch({type: DELETE_COLOR_RESET})
+            dispatch(listColors())
+        }
+
+        // Success on creating color
+        if (successCreatingColor) {
+            history.push(`/admin/colors/${color._id}/edit`)
+        } else {
+            dispatch(listColors())
+        }
+
 
     }, [dispatch, history, userInfo, successCreatingScale, successUpdateScale, successDeleteScale, successCreatingCategory, updateCategorySuccess, successDeletingCategory, successCreatingBrand,
-    successUpdateBrand, successDeleteBrand])
+        successUpdateBrand, successDeleteBrand, successUpdateColor, successDeleteColor, successCreatingColor])
 
 
     return (
         <>
+            {/* Buttons */}
             {loadingDeleteCategory && <Loader/>}
             {errorDeleteCategory && <Message variant='danger'>{errorDeleteCategory}</Message>}
             <Row className='align-items-center' md={12}>
                 <Col className='text-center'>
-                    <Button className='my-3' variant='outline-dark' onClick={createNewCategory}>
+                    <Button className='my-3' variant='outline-dark' onClick={createNewCategory} disabled={loadingCategories || loadingCategoryUpdate}>
                         <i className='fas fa-plus'></i> Create Category
                     </Button>
                 </Col>
                 <Col className='text-center'>
-                    <Button className='my-3' variant='outline-dark' onClick={createNewScale}>
+                    <Button className='my-3' variant='outline-dark' onClick={createNewScale} disabled={loadingCategories || loadingCategoryUpdate}>
                         <i className='fas fa-plus'></i> Create Scale
                     </Button>
                 </Col>
 
                 <Col className='text-center'>
-                    <Button className='my-3' variant='outline-dark' onClick={createNewBrand}>
+                    <Button className='my-3' variant='outline-dark' onClick={createNewBrand} disabled={loadingAllBrands || loadingUpdateBrand}>
                         <i className='fas fa-plus'></i> Create Brand
                     </Button>
                 </Col>
+                <Col className='text-center'>
+                    <Button className='my-3' variant='outline-dark' onClick={createNewColor} disabled={loadingAllColors || loadingUpdateColor}>
+                        <i className='fas fa-plus'></i> Create Color
+                    </Button>
+                </Col>
             </Row>
+            {/* End of buttons */}
+
+            {/* Categories table */}
             {errorLoadingCategories && <Message variant='danger'>{errorLoadingCategories}</Message>}
             {loadingCategories ? <Loader/> : errorLoadingCategories ?
                 <Message variant='danger'>{errorLoadingCategories}</Message> : (
@@ -224,6 +283,9 @@ const AdminCategoryListScreen = ({match, history}) => {
                             </tbody>
                             {/*<Paginate pages={pages} page={page} isAdmin={true}/>*/}
                         </Table>
+                        {/* End of categories table */}
+
+                        {/* Brands table */}
                         <Row>
                             <Col>
                                 <h2>Brands</h2>
@@ -293,6 +355,45 @@ const AdminCategoryListScreen = ({match, history}) => {
                                         </LinkContainer>
                                         <Button variant='danger' className='btn-sm' onClick={() => {
                                             deleteScaleById(scale._id)
+                                        }}>
+                                            <i className='fas fa-trash'></i>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                            {/*<Paginate pages={pages} page={page} isAdmin={true}/>*/}
+                            </tbody>
+                        </Table>
+                        <Row>
+                            <Col>
+                                <h2>Colors</h2>
+                            </Col>
+                            {errorGettingColors && <Message variant='danger'>{errorGettingColors}</Message>}
+                            {errorCreatingColor && <Message variant='danger'>{errorCreatingColor}</Message>}
+                            {errorDeleteColor && <Message variant='danger'>{errorDeleteColor}</Message>}
+                        </Row>
+                        {loadingAllColors && <Loader/>}
+                        <Table striped bordered hover responsive className='table-sm'>
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Color</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {colors.map(color => (
+                                <tr key={color._id}>
+                                    <td>{color._id}</td>
+                                    <td>{color.name}</td>
+                                    <td>
+                                        <LinkContainer to={`/admin/colors/${color._id}/edit`}>
+                                            <Button variant="outline-dark" className='btn-sm'>
+                                                <i className='fas fa-edit'></i>
+                                            </Button>
+                                        </LinkContainer>
+                                        <Button variant='danger' className='btn-sm' onClick={() => {
+                                            deleteColorById(color._id)
                                         }}>
                                             <i className='fas fa-trash'></i>
                                         </Button>

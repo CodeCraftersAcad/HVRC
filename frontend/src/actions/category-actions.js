@@ -41,7 +41,22 @@ import {
     BRAND_UPDATE_FAIL,
     DELETE_BRAND_REQUEST,
     DELETE_BRAND_SUCCESS,
-    DELETE_BRAND_FAIL
+    DELETE_BRAND_FAIL,
+    GET_ALL_COLORS_REQUEST,
+    GET_ALL_COLORS_SUCCESS,
+    GET_ALL_COLORS_FAIL,
+    COLOR_DETAILS_REQUEST,
+    COLOR_DETAILS_SUCCESS,
+    COLOR_DETAILS_FAIL,
+    CREATE_COLOR_REQUEST,
+    CREATE_COLOR_SUCCESS,
+    CREATE_COLOR_FAIL,
+    UPDATE_COLOR_REQUEST,
+    UPDATE_COLOR_SUCCESS,
+    UPDATE_COLOR_FAIL,
+    DELETE_COLOR_REQUEST,
+    DELETE_COLOR_SUCCESS,
+    DELETE_COLOR_FAIL
 } from "../constants/categories-constants";
 import axios from "axios";
 import {PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS} from "../constants/product-contstants";
@@ -435,6 +450,138 @@ export const adminDeleteBrandById = (id) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: DELETE_BRAND_FAIL,
+            // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
+            // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const listColors = () => async (dispatch) => {
+    try {
+        dispatch({type: GET_ALL_COLORS_REQUEST})
+
+        const {data} = await axios.get(`/api/colors`)
+
+        dispatch({
+            type: GET_ALL_COLORS_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: GET_ALL_COLORS_FAIL,
+            // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
+            // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const listColorDetails = (id) => async (dispatch) => {
+    try {
+        dispatch({type: COLOR_DETAILS_REQUEST})
+
+        const {data} = await axios.get(`/api/colors/${id}`)
+
+        dispatch({
+            type: COLOR_DETAILS_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: COLOR_DETAILS_FAIL,
+            // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
+            // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const adminCreateNewColor = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: CREATE_COLOR_REQUEST
+        })
+
+        const {userLogin: {userInfo}} = getState()
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            },
+        }
+
+        const {data} = await axios.post(`/api/colors`, {}, config)
+
+        dispatch({
+            type: CREATE_COLOR_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: CREATE_COLOR_FAIL,
+            // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
+            // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const adminUpdateSingleColor = (color) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: UPDATE_COLOR_REQUEST
+        })
+
+        const {userLogin: {userInfo}} = getState()
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            },
+        }
+
+        const {data} = await axios.put(`/api/colors/${color._id}`, color, config)
+
+        dispatch({
+            type: UPDATE_COLOR_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: UPDATE_COLOR_FAIL,
+            // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
+            // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const adminDeleteColorById = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: DELETE_COLOR_REQUEST
+        })
+
+        const {userLogin: {userInfo}} = getState()
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            },
+        }
+
+        await axios.delete(`/api/colors/${id}`, config)
+
+        dispatch({type: DELETE_COLOR_SUCCESS})
+
+    } catch (error) {
+        dispatch({
+            type: DELETE_COLOR_FAIL,
             // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
             // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
             payload: error.response && error.response.data.message ? error.response.data.message : error.message

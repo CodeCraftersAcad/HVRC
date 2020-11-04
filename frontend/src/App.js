@@ -20,16 +20,15 @@ import AdminProductEditScreen from "./screens/AdminProductEditScreen";
 import AdminOrderListScreen from "./screens/AdminOrdersListScreen";
 import AdminCategoryListScreen from "./screens/AdminCategoryListScreen";
 import AdminEditScaleScreen from "./screens/AdminEditScaleScreen";
-import Demo from "./components/Demo";
 import AdminEditCategoryScreen from "./screens/AdminEditCategoryScreen";
 import AdminBrandEditScreen from "./screens/AdminBrandEditScreen";
+import AdminColorEditScreen from "./screens/AdminColorEditScreen";
 
 const App = () => {
     return (
         <Router>
             <Header/>
             <main className='py-4'>
-                {/*<Demo/>*/}
                 <Container>
                     <Route path='/admin/orderlist' component={AdminOrderListScreen} />
                     <Route path='/order/:id' component={OrderDetailsScreen} />
@@ -45,6 +44,7 @@ const App = () => {
                     <Route path='/admin/scales/:id/edit' component={AdminEditScaleScreen} />
                     <Route path='/admin/categories/:id/edit' component={AdminEditCategoryScreen} />
                     <Route path='/admin/brands/:id/edit' component={AdminBrandEditScreen} />
+                    <Route path='/admin/colors/:id/edit' component={AdminColorEditScreen} />
                     <Route path='/admin/userlist' component={AdminUserListScreen} />
                     <Route path='/admin/users/:id/edit' component={AdminUserEditScreen} />
                     <Route path='/admin/productlist' component={AdminProductListScreen} exact />

@@ -3,44 +3,46 @@ import {Form} from "react-bootstrap";
 import {Button} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    adminUpdateSingleCategory,
-    listCategoryDetails,
-
+    adminUpdateSingleColor,
+    adminUpdateSingleScale,
+    listColorDetails,
+    listScaleDetails
 } from "../actions/category-actions";
 import Message from "../components/message";
 import {Link} from "react-router-dom";
 import Loader from "../components/Loader";
 import FormContainer from "../components/form-container";
-import {CATEGORY_UPDATE_RESET} from "../constants/categories-constants";
+import {UPDATE_COLOR_RESET} from "../constants/categories-constants";
 
-const AdminEditCategoryScreen = ({match, history}) => {
-    const categoryId = match.params.id
+const AdminColorEditScreen = ({match, history}) => {
+    const colorId = match.params.id
     const [name, setName] = useState('')
     const dispatch = useDispatch()
 
-    const categoryDetails = (useSelector(state => state.categoryDetails))
-    const {loading, error: errorDetails, category} = categoryDetails
+    const getColorDetails = (useSelector(state => state.getColorDetails))
+    const {loading, error: errorDetails, color} = getColorDetails
 
-    const update = (useSelector(state => state.updateCategory))
-    const {loading: loadingCategoryUpdate, error: errorUpdateCategory, success: updateCategorySuccess} = update
+
+    const updateColor = (useSelector(state => state.updateColor))
+    const {loading: loadingColorUpdate, error: errorUpdateSuccess, success: updateColorSuccess} = updateColor
 
     useEffect(() => {
-        if (updateCategorySuccess) {
+        if (updateColorSuccess) {
             history.push('/admin/categorylist')
         } else {
-            if (!category.name || category._id !== categoryId) {
-                dispatch(listCategoryDetails(categoryId))
+            if (!color.name || color._id !== colorId) {
+                dispatch(listColorDetails(colorId))
             } else {
-                dispatch({type: CATEGORY_UPDATE_RESET})
-                setName(category.name)
+                dispatch({type: UPDATE_COLOR_RESET})
+                setName(color.name)
             }
         }
-    }, [dispatch, history, updateCategorySuccess, category, categoryId])
+    }, [dispatch, history, updateColorSuccess, color, colorId])
 
     const updateCategory = e => {
         e.preventDefault()
-        dispatch(adminUpdateSingleCategory({
-            _id: categoryId,
+        dispatch(adminUpdateSingleColor({
+            _id: colorId,
             name
         }))
     }
@@ -51,9 +53,9 @@ const AdminEditCategoryScreen = ({match, history}) => {
             </Link>
             {errorDetails && <Message variant='danger'>{errorDetails}</Message>}
             <FormContainer>
-                <h1>Edit Category</h1>
-                {loadingCategoryUpdate && <Loader/>}
-                {errorUpdateCategory && <Message variant='danger'>{errorUpdateCategory}</Message>}
+                <h1>Edit Color</h1>
+                {loadingColorUpdate && <Loader/>}
+                {errorUpdateSuccess && <Message variant='danger'>{errorUpdateSuccess}</Message>}
                 {loading
                     ? <Loader/>
                     : errorDetails
@@ -61,9 +63,9 @@ const AdminEditCategoryScreen = ({match, history}) => {
                         : (
                             <Form onSubmit={updateCategory}>
 
-                                <Form.Group controlId='scale'>
+                                <Form.Group controlId='color'>
                                     <Form.Control type='text'
-                                                  placeholder='Enter scale'
+                                                  placeholder='Enter color name'
                                                   value={name}
                                                   onChange={e => setName(e.target.value)}>
                                     </Form.Control>
@@ -76,4 +78,4 @@ const AdminEditCategoryScreen = ({match, history}) => {
     );
 };
 
-export default AdminEditCategoryScreen;
+export default AdminColorEditScreen;

@@ -5,7 +5,7 @@ import {deleteScale, getScales, getSingleScale, postNewScale, updateScale} from 
 import {auth, isAdminCheck} from "../middleware/auth.js";
 
 
-router.route('/').get(getScales).post(postNewScale)
+router.route('/').get(getScales).post(auth, isAdminCheck, postNewScale)
 router.route('/:id').get(getSingleScale).put(auth, isAdminCheck, updateScale).delete(auth, isAdminCheck, deleteScale)
 
 export default router;
