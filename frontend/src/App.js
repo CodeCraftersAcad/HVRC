@@ -29,7 +29,7 @@ const App = () => {
         <Router>
             <Header/>
             <main className='py-4'>
-                <Demo/>
+                {/*<Demo/>*/}
                 <Container>
                     <Route path='/admin/orderlist' component={AdminOrderListScreen} />
                     <Route path='/order/:id' component={OrderDetailsScreen} />
