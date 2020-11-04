@@ -97,6 +97,7 @@ const createMewProduct = asyncHandler(async (req, res) => {
         colors: '',
         shippingCost: 0,
         shippingTime: '',
+        warranty: '30 day manufacture warranty over defects'
     })
 
     const createdProduct = await product.save()
@@ -124,7 +125,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         product.image = image
         product.shippingCost = shippingCost
         product.shippingTime = shippingTime
-        // product.image2 = image2
+        product.image2 = image2
         // product.image3 = image3
         // product.image4 = image4
         // product.image5 = image5

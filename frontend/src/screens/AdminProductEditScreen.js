@@ -16,6 +16,7 @@ const AdminProductEditScreen = ({match, history}) => {
     const [additionalName, setAdditionalName] = useState('');
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState('')
+    const [image2, setImage2] = useState('')
     const [brand, setBrand] = useState('')
     const [category, setCategory] = useState('')
     const [countInStock, setCountInStock] = useState(0)
@@ -122,6 +123,28 @@ const AdminProductEditScreen = ({match, history}) => {
             setUploading(false)
         }
     }
+    const uploadPhoto2 = async (e) => {
+        const file = e.target.files[0]
+        const formData = new FormData()
+        formData.append('image2', file)
+        setUploading(true)
+        try {
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+
+            const {data} = await axios.post('/api/upload/photo2', formData, config)
+            setImage2(data)
+            setUploading(false)
+
+        } catch (error) {
+            console.error(error)
+            setUploading(false)
+        }
+    }
 
     const updateProduct = e => {
         e.preventDefault()
@@ -148,9 +171,10 @@ const AdminProductEditScreen = ({match, history}) => {
             weight,
             scale,
             subCategory,
-            colors,
+            color,
             shippingCost,
-            shippingTime
+            shippingTime,
+            image2
         }))
     }
     return (
@@ -254,6 +278,20 @@ const AdminProductEditScreen = ({match, history}) => {
                                                label='Choose file from computer'
                                                custom
                                                onChange={uploadPhoto}>
+                                    </Form.File>
+                                    {uploading && <Loader/>}
+                                </Form.Group>
+                                <Form.Group controlId='image2'>
+                                    <Form.Label>Image 2</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter image2 url'
+                                                  value={image2}
+                                                  onChange={e => setImage2(e.target.value)}>
+                                    </Form.Control>
+                                    <Form.File id='image-file'
+                                               label='Choose file from computer'
+                                               custom
+                                               onChange={uploadPhoto2}>
                                     </Form.File>
                                     {uploading && <Loader/>}
                                 </Form.Group>
