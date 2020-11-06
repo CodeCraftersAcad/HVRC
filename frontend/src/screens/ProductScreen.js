@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {Row, Col, Image, ListGroup, Card, Button, Form, Table} from "react-bootstrap";
+import {Row, Col, ListGroup, Card, Button, Form, Table} from "react-bootstrap";
 import Rating from "../components/Rating";
 import {listProductDetails, createNewProductReview} from "../actions/product-actions";
 import Loader from "../components/Loader";
 import Message from "../components/message";
 import {PRODUCT_REVIEW_RESET} from "../constants/product-contstants";
+import ProductDetailsCarousel from "../components/ProductDetailsCarousel";
+import ProductCategoryCarousel from "../components/ProductCategoryCarousel";
 
 const ProductScreen = ({history, match}) => {
     const [quantity, setQuantity] = useState(1)
@@ -56,7 +58,7 @@ const ProductScreen = ({history, match}) => {
                 <>
                     <Row className='mb-4'>
                         <Col md={4}>
-                            <Image src={product.image} alt={product.name} fluid/>
+                            <ProductDetailsCarousel product={product}/>
                         </Col>
                         <Col md={4}>
                             <ListGroup variant='flush'>
@@ -116,18 +118,18 @@ const ProductScreen = ({history, match}) => {
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
-                                    <ListGroup.Item>
-                                        <Row>
-                                            <Col>
-                                                Discountable:
-                                            </Col>
-                                            <Col>
-                                                {product.discountable ?
-                                                    <i className='fa fa-check' style={{color: 'green'}}></i> :
-                                                    <i className='fas fa-times' style={{color: 'red'}}></i>}
-                                            </Col>
-                                        </Row>
-                                    </ListGroup.Item>
+                                    {/*<ListGroup.Item>*/}
+                                    {/*    <Row>*/}
+                                    {/*        <Col>*/}
+                                    {/*            Discountable:*/}
+                                    {/*        </Col>*/}
+                                    {/*        <Col>*/}
+                                    {/*            {product.discountable ?*/}
+                                    {/*                <i className='fa fa-check' style={{color: 'green'}}></i> :*/}
+                                    {/*                <i className='fas fa-times' style={{color: 'red'}}></i>}*/}
+                                    {/*        </Col>*/}
+                                    {/*    </Row>*/}
+                                    {/*</ListGroup.Item>*/}
                                     <ListGroup.Item>
                                         <Row>
                                             <Col>
@@ -170,18 +172,29 @@ const ProductScreen = ({history, match}) => {
                             </Card>
                         </Col>
                     </Row>
-                    <Row className='pt-2 pb-4'>
-                        <Col lg={6} md={6} sm={12} className=''>
-                            <ListGroup.Item>
-                               <strong>Description:</strong>{product.description}
-                            </ListGroup.Item>
-                        </Col>
-                        <Col lg={6} md={6} sm={12}>
-                            <ListGroup.Item>
-                                <strong>Other Information: </strong>{product.other}
-                            </ListGroup.Item>
-                        </Col>
-                    </Row>
+                    {!product.other ? (
+                        <Row className='pt-2 pb-4'>
+                            <Col lg={12} md={12} sm={12} className=''>
+                                <ListGroup.Item>
+                                    <strong>Description:</strong>{product.description}
+                                </ListGroup.Item>
+                            </Col>
+                        </Row>
+                        ) : (
+                        <Row className='pt-2 pb-4'>
+                            <Col lg={6} md={6} sm={12} className=''>
+                                <ListGroup.Item>
+                                    <strong>Description:</strong>{product.description}
+                                </ListGroup.Item>
+                            </Col>
+                            <Col lg={6} md={6} sm={12}>
+                                <ListGroup.Item>
+                                    <strong>Other Information: </strong>{product.other}
+                                </ListGroup.Item>
+                            </Col>
+                        </Row>
+                    )}
+
                     <Row>
                         <Col md={6} sm={12}>
                             <Table striped bordered hover responsive className='table-sm'>
@@ -264,13 +277,20 @@ const ProductScreen = ({history, match}) => {
                                                               onChange={e => setComment(e.target.value)}>
                                                 </Form.Control>
                                             </Form.Group>
-                                            <Button type='submit' variant='outline-dark' disabled={loadingProductReview}>Submit Review</Button>
+                                            <Button type='submit' variant='outline-dark'
+                                                    disabled={loadingProductReview}>Submit Review</Button>
                                         </Form>
                                     ) : <Message><Link to='/login'>
                                         Login to leave a comment
                                     </Link></Message>}
                                 </ListGroup.Item>
                             </ListGroup>
+                        </Col>
+                    </Row>
+                    <Row className='mt-4'>
+                            <h4>You may also like</h4>
+                        <Col>
+                            <ProductCategoryCarousel category={product.category} subcategory={product.subCategory}/>
                         </Col>
                     </Row>
                 </>

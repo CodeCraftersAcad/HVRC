@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 })
 
 function checkFileType(file, cb) {
-    const filetypes = /jpg|jpeg|png|jtfif/
+    const filetypes = /jpg|jpeg|png|/
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
     const mimetype = filetypes.test(file.mimetype)
     if (extname && mimetype) {
@@ -45,9 +45,23 @@ router.post('/', upload.single('image'), asyncHandler (async (req, res) => {
 }))
 
 router.post('/photo2', upload.single('image'), asyncHandler (async (req, res) => {
-    // const uploadPhoto = await cloud.uploader.upload(`${req.file.path}`)
-    // res.send(uploadPhoto.url)
-    console.log(req.body)
+    const uploadPhoto = await cloud.uploader.upload(`${req.file.path}`)
+    res.send(uploadPhoto.url)
+}))
+
+router.post('/photo3', upload.single('image'), asyncHandler (async (req, res) => {
+    const uploadPhoto = await cloud.uploader.upload(`${req.file.path}`)
+    res.send(uploadPhoto.url)
+}))
+
+router.post('/photo4', upload.single('image'), asyncHandler (async (req, res) => {
+    const uploadPhoto = await cloud.uploader.upload(`${req.file.path}`)
+    res.send(uploadPhoto.url)
+}))
+
+router.post('/photo5', upload.single('image'), asyncHandler (async (req, res) => {
+    const uploadPhoto = await cloud.uploader.upload(`${req.file.path}`)
+    res.send(uploadPhoto.url)
 }))
 
 export default router

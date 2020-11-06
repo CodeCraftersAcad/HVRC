@@ -19,7 +19,10 @@ import {
     PRODUCT_REVIEW_FAIL,
     PRODUCT_GET_BEST_PRODUCTS_REQUEST,
     PRODUCT_GET_BEST_PRODUCTS_SUCCESS,
-    PRODUCT_GET_BEST_PRODUCTS_FAIL
+    PRODUCT_GET_BEST_PRODUCTS_FAIL,
+    PRODUCTS_BY_CATEGORY_REQUEST,
+    PRODUCTS_BY_CATEGORY_SUCCESS,
+    PRODUCTS_BY_CATEGORY_FAIL
 } from "../constants/product-contstants";
 import axios from 'axios';
 
@@ -187,7 +190,7 @@ export const listTopRatedProducts = () => async (dispatch) => {
     try {
         dispatch({type: PRODUCT_GET_BEST_PRODUCTS_REQUEST})
 
-        const {data} = await axios.get(`/api/products//top`)
+        const {data} = await axios.get(`/api/products/top`)
 
         dispatch({
             type: PRODUCT_GET_BEST_PRODUCTS_SUCCESS,
@@ -196,6 +199,26 @@ export const listTopRatedProducts = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: PRODUCT_GET_BEST_PRODUCTS_FAIL,
+            // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
+            // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const productsByCategory = (category, subcat) => async (dispatch) => {
+    try {
+        dispatch({type: PRODUCTS_BY_CATEGORY_REQUEST})
+
+        const {data} = await axios.get(`/api/products/category/${category}/${subcat}`)
+
+        dispatch({
+            type: PRODUCTS_BY_CATEGORY_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: PRODUCTS_BY_CATEGORY_FAIL,
             // error.response is the error from the server, error.response.data.message is the custom error from the backend when fetching a product
             // If their is a custom response we want to send that message to the component for viewing if not send the generic message.
             payload: error.response && error.response.data.message ? error.response.data.message : error.message

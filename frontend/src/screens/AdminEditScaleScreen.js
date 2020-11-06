@@ -23,12 +23,12 @@ const AdminEditScaleScreen = ({match, history}) => {
 
     useEffect(() => {
         if (updateScaleSuccess) {
+            dispatch({type: SCALE_UPDATE_RESET})
             history.push('/admin/categorylist')
         } else {
             if (!scale.name || scale._id !== scaleId) {
                 dispatch(listScaleDetails(scaleId))
             } else {
-    dispatch({type: SCALE_UPDATE_RESET})
                 setName(scale.name)
             }
         }

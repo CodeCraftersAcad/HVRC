@@ -59,7 +59,6 @@ import {
     DELETE_COLOR_FAIL
 } from "../constants/categories-constants";
 import axios from "axios";
-import {PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS} from "../constants/product-contstants";
 
 export const listCategories = () => async (dispatch) => {
     try {

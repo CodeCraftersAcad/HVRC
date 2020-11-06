@@ -17,11 +17,9 @@ import {
     adminCreateNewColor, adminDeleteColorById, listColors
 } from "../actions/category-actions";
 import {
-    BRAND_UPDATE_RESET,
-    CATEGORY_UPDATE_RESET, DELETE_BRAND_RESET, DELETE_CATEGORY_RESET, DELETE_COLOR_RESET,
+    DELETE_BRAND_RESET, DELETE_CATEGORY_RESET, DELETE_COLOR_RESET,
     DELETE_SCALE_RESET,
-    SCALE_CREATE_RESET,
-    SCALE_UPDATE_RESET, UPDATE_COLOR_RESET
+    SCALE_CREATE_RESET
 } from "../constants/categories-constants";
 
 const AdminCategoryListScreen = ({match, history}) => {
@@ -38,9 +36,6 @@ const AdminCategoryListScreen = ({match, history}) => {
     const createScale = useSelector(state => state.createScale)
     const {loading: loadingCreateScale, error: errorCreatingScale, success: successCreatingScale, scale} = createScale
 
-    const updateScale = useSelector(state => state.updateScale)
-    const {loading: loadingUpdateScale, success: successUpdateScale, scale: updatedScale} = updateScale
-
     const deleteScale = (useSelector(state => state.deleteScale))
     const {loading: loadingDeleteScale, error: errorDeleteScale, success: successDeleteScale} = deleteScale
     // End scale state
@@ -55,8 +50,6 @@ const AdminCategoryListScreen = ({match, history}) => {
     const deleteCategory = useSelector(state => state.deleteCategory)
     const {loading: loadingDeleteCategory, success: successDeletingCategory, error: errorDeleteCategory} = deleteCategory
 
-    const update = (useSelector(state => state.updateCategory))
-    const {loading: loadingCategoryUpdate, error: errorUpdateCategory, success: updateCategorySuccess} = update
     // End category state
 
     // Brand state
@@ -65,9 +58,6 @@ const AdminCategoryListScreen = ({match, history}) => {
 
     const createBrand = useSelector(state => state.createBrand)
     const {loading: loadingCreateBrand, error: errorCreatingBrand, success: successCreatingBrand, brand} = createBrand
-
-    const updateBrand = useSelector(state => state.updateBrand)
-    const {loading: loadingUpdateBrand, success: successUpdateBrand, scale: updatedBrand} = updateBrand
 
     const deleteBrand = (useSelector(state => state.deleteBrand))
     const {loading: loadingDeleteBrand, error: errorDeleteBrand, success: successDeleteBrand} = deleteBrand
@@ -80,12 +70,10 @@ const AdminCategoryListScreen = ({match, history}) => {
     const createColor = useSelector(state => state.createColor)
     const {loading: loadingCreateColor, error: errorCreatingColor, success: successCreatingColor, color} = createColor
 
-    const updateColor = useSelector(state => state.updateColor)
-    const {loading: loadingUpdateColor, success: successUpdateColor, scale: updatedColor} = updateColor
-
     const deleteColor = (useSelector(state => state.deleteColor))
     const {loading: loadingDeleteColor, error: errorDeleteColor, success: successDeleteColor} = deleteColor
     // End color state
+
 
     // Scale action
     const createNewScale = () => {
@@ -151,16 +139,6 @@ const AdminCategoryListScreen = ({match, history}) => {
             dispatch(listScale())
         }
 
-        // Success updating scale
-        if (updateScale) {
-            dispatch({type: SCALE_UPDATE_RESET})
-        }
-
-        // Success updating category
-        if (updateCategorySuccess) {
-            dispatch({type: CATEGORY_UPDATE_RESET})
-        }
-
         // Success deleting category
         if (successDeletingCategory) {
             dispatch({type: DELETE_CATEGORY_RESET})
@@ -174,11 +152,6 @@ const AdminCategoryListScreen = ({match, history}) => {
             dispatch(listCategories())
         }
 
-        // Success updating brand
-        if (successUpdateBrand) {
-            dispatch({type: BRAND_UPDATE_RESET})
-            history.push('/admin/categorylist')
-        }
         // Success deleting scale
         if (successDeleteBrand) {
             dispatch({type: DELETE_BRAND_RESET})
@@ -189,10 +162,6 @@ const AdminCategoryListScreen = ({match, history}) => {
             history.push(`/admin/brands/${brand._id}/edit`)
         } else {
             dispatch(listBrands())
-        }
-        // Success updating color
-        if (successUpdateColor) {
-            dispatch({type: UPDATE_COLOR_RESET})
         }
 
         // Success deleting color
@@ -209,8 +178,8 @@ const AdminCategoryListScreen = ({match, history}) => {
         }
 
 
-    }, [dispatch, history, userInfo, successCreatingScale, successUpdateScale, successDeleteScale, successCreatingCategory, updateCategorySuccess, successDeletingCategory, successCreatingBrand,
-        successUpdateBrand, successDeleteBrand, successUpdateColor, successDeleteColor, successCreatingColor])
+    }, [dispatch, history, userInfo, successCreatingScale, successDeleteScale, successCreatingCategory, successDeletingCategory, successCreatingBrand,
+        successDeleteBrand, successDeleteColor, successCreatingColor])
 
 
     return (
@@ -220,23 +189,28 @@ const AdminCategoryListScreen = ({match, history}) => {
             {errorDeleteCategory && <Message variant='danger'>{errorDeleteCategory}</Message>}
             <Row className='align-items-center' md={12}>
                 <Col className='text-center'>
-                    <Button className='my-3' variant='outline-dark' onClick={createNewCategory} disabled={loadingCategories || loadingCategoryUpdate}>
+                    <Button className='my-3' variant='outline-dark' onClick={createNewCategory}
+                            disabled={loadingCategories || loadingDeleteCategory || loadingCreateCategory}>
                         <i className='fas fa-plus'></i> Create Category
                     </Button>
                 </Col>
+
                 <Col className='text-center'>
-                    <Button className='my-3' variant='outline-dark' onClick={createNewScale} disabled={loadingCategories || loadingCategoryUpdate}>
+                    <Button className='my-3' variant='outline-dark' onClick={createNewScale}
+                            disabled={loadingCreateScale || loadingDeleteScale  || loadingCreateScale}>
                         <i className='fas fa-plus'></i> Create Scale
                     </Button>
                 </Col>
 
                 <Col className='text-center'>
-                    <Button className='my-3' variant='outline-dark' onClick={createNewBrand} disabled={loadingAllBrands || loadingUpdateBrand}>
+                    <Button className='my-3' variant='outline-dark' onClick={createNewBrand}
+                            disabled={loadingAllBrands || loadingDeleteBrand || loadingCreateBrand}>
                         <i className='fas fa-plus'></i> Create Brand
                     </Button>
                 </Col>
                 <Col className='text-center'>
-                    <Button className='my-3' variant='outline-dark' onClick={createNewColor} disabled={loadingAllColors || loadingUpdateColor}>
+                    <Button className='my-3' variant='outline-dark' onClick={createNewColor}
+                            disabled={loadingAllColors || loadingDeleteColor || loadingCreateColor}>
                         <i className='fas fa-plus'></i> Create Color
                     </Button>
                 </Col>
@@ -245,6 +219,7 @@ const AdminCategoryListScreen = ({match, history}) => {
 
             {/* Categories table */}
             {errorLoadingCategories && <Message variant='danger'>{errorLoadingCategories}</Message>}
+            {errorCreatingCategory && <Message variant='danger'>{errorCreatingCategory}</Message>}
             {loadingCategories ? <Loader/> : errorLoadingCategories ?
                 <Message variant='danger'>{errorLoadingCategories}</Message> : (
                     <>

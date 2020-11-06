@@ -74,17 +74,17 @@ const createMewProduct = asyncHandler(async (req, res) => {
         subCategory: 'Rc',
         user: req.user._id,
         image: '/images/sample.jpg',
-        // image2: '',
-        // image3: '',
-        // image4: '',
-        // image5: '',
+        image2: '',
+        image3: '',
+        image4: '',
+        image5: '',
         brand: 'Sample Brand',
         category: 'Sample Category',
         scale: '',
         countInStock: 0,
         numReviews: 0,
-        description: 'Sample something nice',
-        additionalName: 'Products name additional details',
+        description: 'Sample Description',
+        additionalName: '',
         powerType: '',
         motor: '',
         transmitter: '',
@@ -126,9 +126,9 @@ const updateProduct = asyncHandler(async (req, res) => {
         product.shippingCost = shippingCost
         product.shippingTime = shippingTime
         product.image2 = image2
-        // product.image3 = image3
-        // product.image4 = image4
-        // product.image5 = image5
+        product.image3 = image3
+        product.image4 = image4
+        product.image5 = image5
         product.brand = brand
         product.category = category
         product.countInStock = countInStock
@@ -201,6 +201,24 @@ const getBestReviewedProducts = asyncHandler(async (req, res) => {
     res.json(products)
 })
 
+/*
+*  @desc:   Get products by category
+*  @route:  GET /api/products/category/:id
+*  @access: Public
+*/
+const getProductsByCategory = asyncHandler(async (req, res) => {
+    let search = {
+        category: {
+            $regex: req.params.name
+        },
+        subCategory: {
+            $regex: req.params.subcategory
+        }
+    }
+    const products = await Product.find(search).limit(5)
+    res.json(products)
+})
+
 export {
     getAllProducts,
     getSingleProduct,
@@ -208,5 +226,6 @@ export {
     createMewProduct,
     updateProduct,
     createNewReview,
-    getBestReviewedProducts
+    getBestReviewedProducts,
+    getProductsByCategory
 }

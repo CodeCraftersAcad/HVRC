@@ -22,18 +22,17 @@ const AdminColorEditScreen = ({match, history}) => {
     const getColorDetails = (useSelector(state => state.getColorDetails))
     const {loading, error: errorDetails, color} = getColorDetails
 
-
     const updateColor = (useSelector(state => state.updateColor))
     const {loading: loadingColorUpdate, error: errorUpdateSuccess, success: updateColorSuccess} = updateColor
 
     useEffect(() => {
         if (updateColorSuccess) {
+            dispatch({type: UPDATE_COLOR_RESET})
             history.push('/admin/categorylist')
         } else {
             if (!color.name || color._id !== colorId) {
                 dispatch(listColorDetails(colorId))
             } else {
-                dispatch({type: UPDATE_COLOR_RESET})
                 setName(color.name)
             }
         }

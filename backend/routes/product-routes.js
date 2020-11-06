@@ -6,7 +6,8 @@ import {
     createMewProduct,
     updateProduct,
     createNewReview,
-    getBestReviewedProducts
+    getBestReviewedProducts,
+    getProductsByCategory
 } from "../controllers/product-controllers.js";
 import {isAdminCheck, auth} from "../middleware/auth.js";
 
@@ -38,6 +39,13 @@ router.route('/:id/reviews').post(auth, createNewReview)
 *  @access: Public
 */
 router.route('/top').get(getBestReviewedProducts)
+
+/*
+*  @desc:   Get products by category
+*  @route:  GET /api/products/category/:id
+*  @access: Public
+*/
+router.route('/category/:name/:subcategory').get(getProductsByCategory)
 /*
 *  @desc:   Delete single product
 *  @route:  DELETE /api/products/:id

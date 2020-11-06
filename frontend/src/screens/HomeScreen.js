@@ -9,6 +9,7 @@ import Paginate from "../components/Paginate";
 import ProductCarousel from "../components/ProductCarousel";
 import {Link} from "react-router-dom";
 
+
 const HomeScreen = ({match}) => {
 
     const keyword = match.params.keyword
@@ -27,7 +28,7 @@ const HomeScreen = ({match}) => {
 
     return (
         <>
-            {!keyword ? <ProductCarousel/> : <Link to={'/'} className='btn btn-dark'>Go Back</Link> }
+            {!keyword ? <ProductCarousel/> : <Link to={'/'} className='btn btn-dark'>Go Back</Link> }\
             <h1 className='mt-5'>Products</h1>
             {loading
                 ? <Loader>Loading...</Loader>

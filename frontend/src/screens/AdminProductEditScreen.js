@@ -17,6 +17,9 @@ const AdminProductEditScreen = ({match, history}) => {
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState('')
     const [image2, setImage2] = useState('')
+    const [image3, setImage3] = useState('')
+    const [image4, setImage4] = useState('')
+    const [image5, setImage5] = useState('')
     const [brand, setBrand] = useState('')
     const [category, setCategory] = useState('')
     const [countInStock, setCountInStock] = useState(0)
@@ -76,6 +79,10 @@ const AdminProductEditScreen = ({match, history}) => {
                 setAdditionalName(product.additionalName)
                 setPrice(product.price)
                 setImage(product.image)
+                setImage2(product.image2)
+                setImage3(product.image3)
+                setImage4(product.image4)
+                setImage5(product.image5)
                 setBrand(product.brand)
                 setCategory(product.category)
                 setCountInStock(product.countInStock)
@@ -126,7 +133,7 @@ const AdminProductEditScreen = ({match, history}) => {
     const uploadPhoto2 = async (e) => {
         const file = e.target.files[0]
         const formData = new FormData()
-        formData.append('image2', file)
+        formData.append('image', file)
         setUploading(true)
         try {
 
@@ -138,6 +145,72 @@ const AdminProductEditScreen = ({match, history}) => {
 
             const {data} = await axios.post('/api/upload/photo2', formData, config)
             setImage2(data)
+            setUploading(false)
+
+        } catch (error) {
+            console.error(error)
+            setUploading(false)
+        }
+    }
+    const uploadPhoto3 = async (e) => {
+        const file = e.target.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+        setUploading(true)
+        try {
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+
+            const {data} = await axios.post('/api/upload/photo3', formData, config)
+            setImage3(data)
+            setUploading(false)
+
+        } catch (error) {
+            console.error(error)
+            setUploading(false)
+        }
+    }
+    const uploadPhoto4 = async (e) => {
+        const file = e.target.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+        setUploading(true)
+        try {
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+
+            const {data} = await axios.post('/api/upload/photo4', formData, config)
+            setImage4(data)
+            setUploading(false)
+
+        } catch (error) {
+            console.error(error)
+            setUploading(false)
+        }
+    }
+    const uploadPhoto5 = async (e) => {
+        const file = e.target.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+        setUploading(true)
+        try {
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+
+            const {data} = await axios.post('/api/upload/photo5', formData, config)
+            setImage5(data)
             setUploading(false)
 
         } catch (error) {
@@ -174,7 +247,10 @@ const AdminProductEditScreen = ({match, history}) => {
             color,
             shippingCost,
             shippingTime,
-            image2
+            image2,
+            image3,
+            image4,
+            image5,
         }))
     }
     return (
@@ -281,6 +357,7 @@ const AdminProductEditScreen = ({match, history}) => {
                                     </Form.File>
                                     {uploading && <Loader/>}
                                 </Form.Group>
+
                                 <Form.Group controlId='image2'>
                                     <Form.Label>Image 2</Form.Label>
                                     <Form.Control type='text'
@@ -296,6 +373,51 @@ const AdminProductEditScreen = ({match, history}) => {
                                     {uploading && <Loader/>}
                                 </Form.Group>
 
+                                <Form.Group controlId='image3'>
+                                    <Form.Label>Image 3</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter image3 url'
+                                                  value={image3}
+                                                  onChange={e => setImage3(e.target.value)}>
+                                    </Form.Control>
+                                    <Form.File id='image-file'
+                                               label='Choose file from computer'
+                                               custom
+                                               onChange={uploadPhoto3}>
+                                    </Form.File>
+                                    {uploading && <Loader/>}
+                                </Form.Group>
+
+                                <Form.Group controlId='image4'>
+                                    <Form.Label>Image 4</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter image4 url'
+                                                  value={image4}
+                                                  onChange={e => setImage4(e.target.value)}>
+                                    </Form.Control>
+                                    <Form.File id='image-file'
+                                               label='Choose file from computer'
+                                               custom
+                                               onChange={uploadPhoto4}>
+                                    </Form.File>
+                                    {uploading && <Loader/>}
+                                </Form.Group>
+
+                                <Form.Group controlId='image5'>
+                                    <Form.Label>Image 5</Form.Label>
+                                    <Form.Control type='text'
+                                                  placeholder='Enter image5 url'
+                                                  value={image5}
+                                                  onChange={e => setImage5(e.target.value)}>
+                                    </Form.Control>
+                                    <Form.File id='image-file'
+                                               label='Choose file from computer'
+                                               custom
+                                               onChange={uploadPhoto5}>
+                                    </Form.File>
+                                    {uploading && <Loader/>}
+                                </Form.Group>
+
                                 {/*<Form.Group controlId='brand'>*/}
                                 {/*    <Form.Label>Brand</Form.Label>*/}
                                 {/*    <Form.Control type='text'*/}
@@ -304,7 +426,8 @@ const AdminProductEditScreen = ({match, history}) => {
                                 {/*                  onChange={e => setBrand(e.target.value)}>*/}
                                 {/*    </Form.Control>*/}
                                 {/*</Form.Group>*/}
-
+                                {loadingAllColors && <Loader/>}
+                                {errorGettingBrands && <Message variant='danger'>{errorGettingBrands}</Message>}
                                 <Form.Group controlId='brand'>
                                     <Form.Label>Brand</Form.Label>
                                     <Form.Control as='select' value={brand}
@@ -331,6 +454,8 @@ const AdminProductEditScreen = ({match, history}) => {
                                 {/*                  onChange={e => setColors(e.target.value)}>*/}
                                 {/*    </Form.Control>*/}
                                 {/*</Form.Group>*/}
+                                {loadingAllColors && <Loader/>}
+                                {errorGettingColors && <Message variant='danger'>{errorGettingColors}</Message>}
                                 <Form.Group controlId='color'>
                                     <Form.Label>Colors</Form.Label>
                                     <Form.Control as='select' value={color}
@@ -362,6 +487,8 @@ const AdminProductEditScreen = ({match, history}) => {
                                     </Form.Control>
                                 </Form.Group>
 
+                                {loadingAllScales && <Loader/>}
+                                {errorGettingScales && <Message variant='danger'>{errorGettingScales}</Message>}
                                 <Form.Group controlId='scale'>
                                     <Form.Label>Scale</Form.Label>
                                     <Form.Control as='select' value={scale}
