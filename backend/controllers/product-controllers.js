@@ -17,7 +17,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
         name: {
             $regex: req.query.keyword,
             $options: 'i'
-        }
+        },
     } : {}
 
     // Get total count of products
