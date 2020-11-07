@@ -57,10 +57,10 @@ const ProductScreen = ({history, match}) => {
             {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (
                 <>
                     <Row className='mb-4'>
-                        <Col md={4}>
+                        <Col md={5}>
                             <ProductDetailsCarousel product={product}/>
                         </Col>
-                        <Col md={4}>
+                        <Col md={3}>
                             <ListGroup variant='flush'>
                                 <ListGroup.Item>
                                     <h2>{product.name} {product.additionalName}</h2>
@@ -168,6 +168,12 @@ const ProductScreen = ({history, match}) => {
                                                 disabled={product.countInStock === 0}
                                                 onClick={addToCart}>Add To Cart</Button>
                                     </ListGroup.Item>
+                                    {userInfo.isAdmin === true && (
+                                        <ListGroup.Item>
+                                            <Link to={`/admin/product/${product._id}/edit`} className='btn btn-block'>
+                                                Edit</Link>
+                                        </ListGroup.Item>
+                                    )}
                                 </ListGroup>
                             </Card>
                         </Col>
@@ -180,7 +186,7 @@ const ProductScreen = ({history, match}) => {
                                 </ListGroup.Item>
                             </Col>
                         </Row>
-                        ) : (
+                    ) : (
                         <Row className='pt-2 pb-4'>
                             <Col lg={6} md={6} sm={12} className=''>
                                 <ListGroup.Item>
@@ -288,8 +294,8 @@ const ProductScreen = ({history, match}) => {
                         </Col>
                     </Row>
                     <Row className='mt-4'>
-                            <h4>You may also like</h4>
-                        <Col>
+                        <h4>You may also like</h4>
+                        <Col lg={12}>
                             <ProductCategoryCarousel category={product.category} subcategory={product.subCategory}/>
                         </Col>
                     </Row>
