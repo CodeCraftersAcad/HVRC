@@ -64,7 +64,6 @@ const ProductScreen = ({history, match}) => {
                             <ListGroup variant='flush'>
                                 <ListGroup.Item>
                                     <h2>{product.name} {product.additionalName}</h2>
-                                    <h4>SKU: {product.sku}</h4>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <Rating text={`${product.numReviews}`} reviews value={product.rating}/>

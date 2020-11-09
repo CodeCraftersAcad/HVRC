@@ -23,7 +23,9 @@ import AdminEditScaleScreen from "./screens/AdminEditScaleScreen";
 import AdminEditCategoryScreen from "./screens/AdminEditCategoryScreen";
 import AdminBrandEditScreen from "./screens/AdminBrandEditScreen";
 import AdminColorEditScreen from "./screens/AdminColorEditScreen";
-
+import CategoryScreen from "./screens/CategoryScreen";
+import LandingScreen from "./screens/LandingScreen";
+import CategoryNav from "./components/CategoryNav";
 const App = () => {
     return (
         <Router>
@@ -51,9 +53,11 @@ const App = () => {
                     <Route path='/admin/productlist/:pageNumber' component={AdminProductListScreen} exact />
                     <Route path='/admin/product/:id/edit' component={AdminProductEditScreen} />
                     <Route path='/search/:keyword' component={HomeScreen} exact/>
+                    <Route path='/category/:keyword' component={CategoryScreen} exact/>
                     <Route path='/page/:pageNumber' component={HomeScreen} exact />
                     <Route path='/search/:keyword/page/:pageNumber' component={HomeScreen} exact />
-                    <Route path='/' component={HomeScreen} exact />
+                    <Route path='/products' component={HomeScreen} exact />
+                    <Route path='/' component={LandingScreen} exact />
                 </Container>
             </main>
             <Footer/>
