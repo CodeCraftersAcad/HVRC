@@ -56,8 +56,9 @@ const App = () => {
                     <Route path='/category/:keyword' component={CategoryScreen} exact/>
                     <Route path='/page/:pageNumber' component={HomeScreen} exact />
                     <Route path='/search/:keyword/page/:pageNumber' component={HomeScreen} exact />
-                    <Route path='/products' component={HomeScreen} exact />
-                    <Route path='/' component={LandingScreen} exact />
+                    {/*<Route path='/products' component={HomeScreen} exact />*/}
+                    <Route path='/' component={HomeScreen} exact />
+                    {/*<Route path='/' component={LandingScreen} exact />*/}
                 </Container>
             </main>
             <Footer/>
