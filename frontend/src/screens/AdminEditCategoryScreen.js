@@ -26,12 +26,12 @@ const AdminEditCategoryScreen = ({match, history}) => {
 
     useEffect(() => {
         if (updateCategorySuccess) {
+            dispatch({type: CATEGORY_UPDATE_RESET})
             history.push('/admin/categorylist')
         } else {
             if (!category.name || category._id !== categoryId) {
                 dispatch(listCategoryDetails(categoryId))
             } else {
-                dispatch({type: CATEGORY_UPDATE_RESET})
                 setName(category.name)
             }
         }

@@ -152,12 +152,13 @@ const AdminCategoryListScreen = ({match, history}) => {
             dispatch(listCategories())
         }
 
-        // Success deleting scale
+        // Success deleting brand
         if (successDeleteBrand) {
             dispatch({type: DELETE_BRAND_RESET})
             dispatch(listBrands())
         }
-        // Success on creating scale
+
+        // Success on creating brand
         if (successCreatingBrand) {
             history.push(`/admin/brands/${brand._id}/edit`)
         } else {
