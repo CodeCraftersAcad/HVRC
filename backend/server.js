@@ -38,7 +38,7 @@ cloud.config({
     api_secret: process.env.CLOUD_API_SECRET
 })
 
-if (env === 'production') app.use(sslRedirect())
+// if (env === 'production') app.use(sslRedirect())
 
 
 app.use('/api/products', productRoutes);
