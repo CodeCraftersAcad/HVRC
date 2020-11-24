@@ -21,6 +21,7 @@ import orderRoutes from './routes/order-routes.js';
 import brandRoutes from './routes/brand-routes.js';
 import uploadRoutes from './routes/upload-routes.js';
 import {notFound, errorhandler} from "./middleware/errors.js";
+import sslRedirect from "heroku-ssl-redirect";
 
 const app = express();
 app.use(express.json());
@@ -36,6 +37,9 @@ cloud.config({
     api_key: process.env.CLOUD_API_KEY,
     api_secret: process.env.CLOUD_API_SECRET
 })
+
+if (env === 'production') app.use(sslRedirect())
+
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
