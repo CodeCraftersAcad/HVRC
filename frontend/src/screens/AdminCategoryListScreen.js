@@ -124,7 +124,8 @@ const AdminCategoryListScreen = ({match, history}) => {
     // End of brand actions
 
     useEffect(() => {
-        if (!userInfo.isAdmin) history.push('/login')
+        if (!userInfo.isAdmin) history.push('/')
+
         dispatch({type: SCALE_CREATE_RESET})
 
         // Success deleting scale
