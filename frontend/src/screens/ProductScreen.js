@@ -167,12 +167,12 @@ const ProductScreen = ({history, match}) => {
                                                 disabled={product.countInStock === 0}
                                                 onClick={addToCart}>Add To Cart</Button>
                                     </ListGroup.Item>
-                                    {userInfo.isAdmin === true && (
-                                        <ListGroup.Item>
-                                            <Link to={`/admin/product/${product._id}/edit`} className='btn btn-block'>
-                                                Edit</Link>
-                                        </ListGroup.Item>
-                                    )}
+                                    {/*{userInfo.isAdmin === true && (*/}
+                                    {/*    <ListGroup.Item>*/}
+                                    {/*        <Link to={`/admin/product/${product._id}/edit`} className='btn btn-block'>*/}
+                                    {/*            Edit</Link>*/}
+                                    {/*    </ListGroup.Item>*/}
+                                    {/*)}*/}
                                 </ListGroup>
                             </Card>
                         </Col>
